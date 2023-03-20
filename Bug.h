@@ -5,10 +5,10 @@
 #ifndef BUG_C_BUG_H
 #define BUG_C_BUG_H
 
-
+enum class Direction { NORTH, EAST, SOUTH, WEST };
 class Bug {
 
-};
 
+};
 
 #endif //BUG_C_BUG_H
