@@ -1,14 +1,32 @@
 //
-// Created by User on 21/03/2023.
+// Created by User on 19/03/2023.
 //
 
-#ifndef BUG_C_CRAWLER_H
-#define BUG_C_CRAWLER_H
+#ifndef CRAWLER_H
+#define CRAWLER_H
+
+#pragma once
+#include "Bug.h"
+
+class Crawler : public Bug {
+public:
+    Crawler(int id, std::pair<int, int> position, int size, sf::Color color, int hopLength, float speed);
 
 
-class Crawler {
-// testing the git lab
+    void move();
+
+private:
+
+    Direction getRandomDirection() const;
+
+    std::pair<int, int> getNextPosition() const;
+
+    bool isValidPosition(const std::pair<int, int>& position) const;
+
+    Direction direction;
+
+    sf::Color color;
 };
+#endif // CRAWLER_H
 
 
-#endif //BUG_C_CRAWLER_H

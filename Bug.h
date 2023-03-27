@@ -7,10 +7,13 @@
 
 #include<iostream>
 #include <list>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics.hpp>
+
 
 enum class Direction { NORTH, EAST, SOUTH, WEST };
-class Bug {
 
+class Bug {
 public:
     Bug(int id, int x, int y, Direction direction, int size);
 
@@ -34,7 +37,19 @@ public:
 
     bool isWayBlocked() const;
 
-private:
+    const sf::Color &getColor();
+
+    long getType();
+
+    void tap();
+
+    void collide(Bug *pBug);
+    bool isOccupied(const std::pair<int, int>& position) const;
+
+
+protected:
+//private:
+
     int id;
     std::pair<int, int> position;
     Direction direction;
@@ -42,8 +57,12 @@ private:
     bool alive;
     std::list<std::pair<int, int>> path;
 
-    bool isOccupied(const std::pair<int, int>& position) const;
-    bool isWayBlocked(int board_size) const;
+
+   bool isWayBlocked(int board_size) const;
+
+    bool m_tapped;
+    sf::Color m_color;
+    long m_type;
 
 };
 

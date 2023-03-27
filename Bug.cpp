@@ -35,6 +35,7 @@ const std::list<std::pair<int, int>>& Bug::getPath() const {
     return path;
 }
 
+
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
         case Direction::NORTH:
@@ -66,4 +67,40 @@ void Bug::move() {
             position.second--;
             break;
     }
+}
+
+const sf::Color& Bug::getColor() {
+    return  m_color;
+}
+
+long Bug::getType() {
+    return m_type;
+}
+
+void Bug::tap() {
+    if (!m_tapped) {
+        m_tapped = true;
+        m_color = sf::Color::White;
+    }
+}
+
+void Bug::collide(Bug *pBug) {
+    if (pBug != nullptr) {
+        if (pBug->isAlive() && isAlive()) {
+            setAlive(false);
+            pBug->setAlive(false);
+            m_color = sf::Color::Yellow;
+            pBug->m_color = sf::Color::Yellow;
+        }
+    }
+}
+
+void Bug::addToPath(const std::pair<int, int>& point) {
+    path.push_back(point);
+}
+void Bug::setPosition(const std::pair<int, int>& new_position) {
+    position = new_position;
+}
+bool Bug::isOccupied(const std::pair<int, int>& position) const {
+    return (getPosition() == position);
 }
