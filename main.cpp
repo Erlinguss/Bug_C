@@ -106,6 +106,8 @@ int main() {
 }
 
 void initializeBoard(vector<Bug*>& bugs) {
+
+
     // Clear the bugs vector
     for (Bug* bug : bugs) {
         delete bug;
@@ -127,14 +129,20 @@ void initializeBoard(vector<Bug*>& bugs) {
         if (bugType == "Crawler") {
             sf::Color color(r, g, b);
             bug = new Crawler(id, make_pair(x, y), size, color,hopLength, speed);
+//            cerr << "Unable to open file bugs.txt" << endl;
 
         }
         else if (bugType == "Hopper") {
             sf::Color color(r, g, b);
             bug = new Hopper(id, make_pair(x, y), size, color, hopLength, speed);
+//            cerr << "Unable to open file bugs.txt" << endl;
+
         }
         if (bug != nullptr) {
             bugs.push_back(bug);
+        }
+        else{
+            cerr << "Unable to open file bugs.txt" << endl;
         }
     }
     inFile.close();
