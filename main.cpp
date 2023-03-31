@@ -83,16 +83,41 @@ int main() {
         }
 
         // Clear the screen
-        window.clear(sf::Color::White);
+        // window.clear(sf::Color::White);
+        //=================================================
+
+        window.clear(sf::Color(127, 127, 127));
+
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_HEIGHT; y++) {
+                sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+                cellShape.setPosition(x * CELL_SIZE, y * CELL_SIZE);
+                cellShape.setFillColor(sf::Color::White);
+                cellShape.setOutlineThickness(1);
+                cellShape.setOutlineColor(sf::Color(192, 192, 192));
+                window.draw(cellShape);
+            }
+        }
+        //=================================================
 
         // Draw the bugs
+//        for (Bug* bug : bugs) {
+//            sf::RectangleShape bugShape(sf::Vector2f(CELL_SIZE * bug->getSize(), CELL_SIZE * bug->getSize()));
+//            bugShape.setPosition(CELL_SIZE * bug->getPosition().first, CELL_SIZE * bug->getPosition().second);
+//            bugShape.setFillColor(bug->getColor());
+//            window.draw(bugShape);
+//        }
+
+        //=================================================
         for (Bug* bug : bugs) {
-            sf::RectangleShape bugShape(sf::Vector2f(CELL_SIZE * bug->getSize(), CELL_SIZE * bug->getSize()));
-            bugShape.setPosition(CELL_SIZE * bug->getPosition().first, CELL_SIZE * bug->getPosition().second);
+            sf::CircleShape bugShape(CELL_SIZE * bug->getSize() / 2);
+            bugShape.setPosition(CELL_SIZE * bug->getPosition().first + CELL_SIZE / 2 - bugShape.getRadius(),
+                                 CELL_SIZE * bug->getPosition().second + CELL_SIZE / 2 - bugShape.getRadius());
             bugShape.setFillColor(bug->getColor());
             window.draw(bugShape);
         }
 
+       //=================================================
         // Display the window
         window.display();
     }
