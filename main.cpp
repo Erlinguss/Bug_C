@@ -19,6 +19,7 @@ void tapBoard(vector<Bug*>& bugs);
 void displayLifeHistory(const vector<Bug*>& bugs);
 void displayCells(const vector<Bug*>& bugs);
 void runSimulation(vector<Bug*>& bugs);
+void writeLifeHistoryToFile(const vector<Bug*>& bugs);
 
 int main() {
     // Create the window
@@ -83,6 +84,7 @@ int main() {
         }
 
         // Clear the screen
+        //=================================================
         // window.clear(sf::Color::White);
         //=================================================
 
@@ -98,7 +100,7 @@ int main() {
                 window.draw(cellShape);
             }
         }
-        //=================================================
+
 
         // Draw the bugs
 //        for (Bug* bug : bugs) {
@@ -154,13 +156,13 @@ void initializeBoard(vector<Bug*>& bugs) {
         if (bugType == "Crawler") {
             sf::Color color(r, g, b);
             bug = new Crawler(id, make_pair(x, y), size, color,hopLength, speed);
-//            cerr << "Unable to open file bugs.txt" << endl;
+
 
         }
         else if (bugType == "Hopper") {
             sf::Color color(r, g, b);
             bug = new Hopper(id, make_pair(x, y), size, color, hopLength, speed);
-//            cerr << "Unable to open file bugs.txt" << endl;
+
 
         }
         if (bug != nullptr) {
@@ -174,30 +176,80 @@ void initializeBoard(vector<Bug*>& bugs) {
 }
 
 
-void displayBugs(const vector<Bug*>& bugs) {
+//void displayBugs(const vector<Bug*>& bugs) {
+//
+//    cout << "Bugs on the board:" << endl;
+//    for (Bug* bug : bugs) {
+//       cout << "ID: " << bug->getId() << ", Type: " << bug->getType() << ", Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
+//    }
+//}
 
-    cout << "Bugs on the board:" << endl;
+void displayBugs(const vector<Bug*>& bugs) {
+    cout << "ID\tType\t\tPosition\tSize\tColor" << endl;
+    cout << "--------------------------------------------------" << endl;
     for (Bug* bug : bugs) {
-       cout << "ID: " << bug->getId() << ", Type: " << bug->getType() << ", Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
+        string type = "";
+        if (dynamic_cast<Crawler*>(bug) != nullptr) {
+            type = "Crawler";
+        }
+        else if (dynamic_cast<Hopper*>(bug) != nullptr) {
+            type = "Hopper";
+        }
+        cout << bug->getId() << "\t" << type
+        << "\t\t(" << bug->getPosition().first
+        << "," << bug->getPosition().second
+        << ")\t" << bug->getSize()
+        << "\t\t(" << bug->getColor().r
+        << "," << bug->getColor().g
+        << "," << bug->getColor().b << ")" << endl;
     }
 }
 
+//void findBug(const vector<Bug*>& bugs) {
+//    int id;
+//    cout << "Enter the ID of the bug you want to find: ";
+//    cin >> id;
+//    Bug* bug = nullptr;
+//    for (Bug* b : bugs) {
+//        if (b->getId() == id) {
+//            bug = b;
+//            break;
+//        }
+//    }
+//    if (bug != nullptr) {
+//        cout << "Bug found: " << bug->getType() << " with ID " << bug->getId() << endl;
+//    }
+//    else {
+//        cout << "Bug not found." << endl;
+//    }
+//}
+
 void findBug(const vector<Bug*>& bugs) {
     int id;
-    cout << "Enter the ID of the bug you want to find: ";
+    cout << "Enter bug ID: ";
     cin >> id;
-    Bug* bug = nullptr;
-    for (Bug* b : bugs) {
-        if (b->getId() == id) {
-            bug = b;
+
+    bool found = false;
+    for (Bug* bug : bugs) {
+        if (bug->getId() == id) {
+            cout << "Bug ID: " << bug->getId() << endl;
+            cout << "Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
+            cout << "Size: " << bug->getSize() << endl;
+            cout << "Color: (" << bug->getColor().r << "," << bug->getColor().g << "," << bug->getColor().b << ")" << endl;
+            if (dynamic_cast<Crawler*>(bug)) {
+                cout << "Bug type: Crawler" << endl;
+            }
+            else if (dynamic_cast<Hopper*>(bug)) {
+                cout << "Bug type: Hopper" << endl;
+            }
+            cout << endl;
+            found = true;
             break;
         }
     }
-    if (bug != nullptr) {
-        cout << "Bug found: " << bug->getType() << " with ID " << bug->getId() << endl;
-    }
-    else {
-        cout << "Bug not found." << endl;
+
+    if (!found) {
+        cout << "Bug with ID " << id << " not found." << endl;
     }
 }
 
@@ -230,38 +282,69 @@ void displayLifeHistory(const vector<Bug*>& bugs) {
     }
 }
 
+//void displayCells(const vector<Bug*>& bugs) {
+//    // Create a 2D vector of cells
+//   vector<vector<char>> cells(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, '-'));
+//
+//    // Fill in the cells with bug information
+//    for (Bug* bug : bugs) {
+//        int x = bug->getPosition().first;
+//        int y = bug->getPosition().second;
+//        char c;
+//        if (reinterpret_cast<const char *>(bug->getType()) == "Crawler") {
+//            c = 'C';
+//        }
+//        else {
+//            c = 'H';
+//        }
+//        cells[y][x] = c;
+//    }
+//
+//    // Display the cells
+//    cout << "  ";
+//    for (int i = 0; i < BOARD_WIDTH; i++) {
+//        cout << i << " ";
+//    }
+//    cout << endl;
+//    for (int y = 0; y < BOARD_HEIGHT; y++) {
+//       cout << y << " ";
+//        for (int x = 0; x < BOARD_WIDTH; x++) {
+//       cout << cells[y][x] << " ";
+//        }
+//       cout << endl;
+//    }
+//}
+
+//=======================new suggestion==============================
+
 void displayCells(const vector<Bug*>& bugs) {
-    // Create a 2D vector of cells
-   vector<vector<char>> cells(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, '-'));
+    // Clear the screen
+    system("cls");
+    cout << "Current Cells:" << endl;
 
-    // Fill in the cells with bug information
-    for (Bug* bug : bugs) {
-        int x = bug->getPosition().first;
-        int y = bug->getPosition().second;
-        char c;
-        if (reinterpret_cast<const char *>(bug->getType()) == "Crawler") {
-            c = 'C';
-        }
-        else {
-            c = 'H';
-        }
-        cells[y][x] = c;
-    }
-
-    // Display the cells
-    cout << "  ";
-    for (int i = 0; i < BOARD_WIDTH; i++) {
-        cout << i << " ";
-    }
-    cout << endl;
+    // Iterate over the board
     for (int y = 0; y < BOARD_HEIGHT; y++) {
-       cout << y << " ";
         for (int x = 0; x < BOARD_WIDTH; x++) {
-       cout << cells[y][x] << " ";
+            // Check if there is a bug at this position
+            bool found = false;
+            for (Bug* bug : bugs) {
+                if (bug->getPosition() == make_pair(x, y)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            // If a bug is present, display its ID
+            if (found) {
+                cout << "| " << "BUG" << " ";
+            } else {
+                cout << "| " << "    ";
+            }
         }
-       cout << endl;
+        cout << "|" << endl;
     }
 }
+//=========================================================
 
 void runSimulation(vector<Bug*>& bugs) {
     int numSteps;
@@ -274,18 +357,32 @@ void runSimulation(vector<Bug*>& bugs) {
             // Move the bug
             bug->move();
 
-            // Check for collision with other bugs
+//             Check for collision with other bugs
             for (Bug* other : bugs) {
                 if (bug != other && bug->getPosition() == other->getPosition()) {
                     bug->collide(other);
                 }
             }
         }
+
+
     }
 
     // Display the final positions of the bugs
     displayCells(bugs);
+    sf::sleep(sf::seconds(0.1));
 }
 
 
+void writeLifeHistoryToFile(const vector<Bug*>& bugs, const string& filename) {
+    ofstream file;
+    file.open("life_history.txt");
+
+    for (const auto& bug : bugs) {
+        file << "Bug ID: " << bug->getId() << "\n";
+        file << "Bug Type: " << bug->getType()<< "\n";
+    }
+
+    file.close();
+}
 
