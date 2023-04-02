@@ -4,9 +4,12 @@
 #include <utility>
 #include<iostream>
 #include "Bug.h"
-
+//
 Bug::Bug(int id, int x, int y, Direction direction, int size)
         : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) {}
+
+//Bug::Bug(int id, int x, int y, Direction direction, int size)
+//        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true), m_tapped(false), m_color(sf::Color::Green), m_type(0) {}
 
 int Bug::getId() const {
     return id;

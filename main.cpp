@@ -57,13 +57,13 @@ int main() {
                         tapBoard(bugs);
                         break;
                     case sf::Keyboard::Num5:
-                        displayLifeHistory(bugs);
+                        runSimulation(bugs);
                         break;
                     case sf::Keyboard::Num6:
-                        displayCells(bugs);
+                        displayLifeHistory(bugs);
                         break;
                     case sf::Keyboard::Num7:
-                        runSimulation(bugs);
+                        displayCells(bugs);
                         break;
                     case sf::Keyboard::Num8:
                         // Write Life History of all Bugs to file
@@ -271,14 +271,29 @@ void tapBoard(vector<Bug*>& bugs) {
     }
 }
 
-void displayLifeHistory(const vector<Bug*>& bugs) {
-    for (Bug* bug : bugs) {
+//void displayLifeHistory(const vector<Bug*>& bugs) {
+//    for (Bug* bug : bugs) {
+//
+//        cout << "Bug " << bug->getId() << " life history:" << endl;
+//        for (auto& pos : bug->getPath()) {
+//            cout << "(" << pos.first << "," << pos.second << ") ";
+//        }
+//        cout << endl;
+//    }
+//}
 
-        cout << "Bug " << bug->getId() << " life history:" << endl;
-        for (auto& pos : bug->getPath()) {
-            cout << "(" << pos.first << "," << pos.second << ") ";
+void displayLifeHistory(const vector<Bug*>& bugs) {
+    for (const auto& bug : bugs) {
+        cout << "Bug " << bug->getId() << " life history: ";
+        const auto& path = bug->getPath();
+        if (path.empty()) {
+            cout << "No movements yet" << endl;
+        } else {
+            for (const auto& point : path) {
+                cout << "(" << point.first << "," << point.second << ") ";
+            }
+            cout << endl;
         }
-        cout << endl;
     }
 }
 
@@ -328,7 +343,7 @@ void displayCells(const vector<Bug*>& bugs) {
             // Check if there is a bug at this position
             bool found = false;
             for (Bug* bug : bugs) {
-                if (bug->getPosition() == make_pair(x, y)) {
+                if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
                     found = true;
                     break;
                 }
@@ -354,23 +369,24 @@ void runSimulation(vector<Bug*>& bugs) {
     // Run the simulation for the specified number of steps
     for (int i = 0; i < numSteps; i++) {
         for (Bug* bug : bugs) {
+            if (bug->isAlive()) {
             // Move the bug
             bug->move();
 
 //             Check for collision with other bugs
             for (Bug* other : bugs) {
-                if (bug != other && bug->getPosition() == other->getPosition()) {
+                if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
                     bug->collide(other);
                 }
             }
         }
-
-
     }
 
-    // Display the final positions of the bugs
     displayCells(bugs);
     sf::sleep(sf::seconds(0.1));
+}
+    // Display the final positions of the bugs
+    displayCells(bugs);
 }
 
 
