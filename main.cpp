@@ -359,7 +359,6 @@ void displayCells(const vector<Bug*>& bugs) {
         cout << "|" << endl;
     }
 }
-//=========================================================
 
 void runSimulation(vector<Bug*>& bugs) {
     int numSteps;
