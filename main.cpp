@@ -176,14 +176,6 @@ void initializeBoard(vector<Bug*>& bugs) {
 }
 
 
-//void displayBugs(const vector<Bug*>& bugs) {
-//
-//    cout << "Bugs on the board:" << endl;
-//    for (Bug* bug : bugs) {
-//       cout << "ID: " << bug->getId() << ", Type: " << bug->getType() << ", Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
-//    }
-//}
-
 void displayBugs(const vector<Bug*>& bugs) {
     cout << "ID\tType\t\tPosition\tSize\tColor" << endl;
     cout << "--------------------------------------------------" << endl;
@@ -226,7 +218,7 @@ void displayBugs(const vector<Bug*>& bugs) {
 
 void findBug(const vector<Bug*>& bugs) {
     int id;
-    cout << "Enter bug ID: ";
+    cout << "Enter the ID of the bug you want to find: ";
     cin >> id;
 
     bool found = false;
@@ -271,16 +263,6 @@ void tapBoard(vector<Bug*>& bugs) {
     }
 }
 
-//void displayLifeHistory(const vector<Bug*>& bugs) {
-//    for (Bug* bug : bugs) {
-//
-//        cout << "Bug " << bug->getId() << " life history:" << endl;
-//        for (auto& pos : bug->getPath()) {
-//            cout << "(" << pos.first << "," << pos.second << ") ";
-//        }
-//        cout << endl;
-//    }
-//}
 
 void displayLifeHistory(const vector<Bug*>& bugs) {
     for (const auto& bug : bugs) {
@@ -359,7 +341,6 @@ void displayCells(const vector<Bug*>& bugs) {
         cout << "|" << endl;
     }
 }
-//=========================================================
 
 void runSimulation(vector<Bug*>& bugs) {
     int numSteps;
