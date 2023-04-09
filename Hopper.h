@@ -9,7 +9,7 @@
 
 class Hopper : public Bug {
 public:
-    Hopper(int id, std::pair<int, int> position, int size, sf::Color color, int hopLength, float speed);
+    Hopper(int id, std::pair<int, int> position, int size, int hopLength, float speed);
 
     void move() override;
 

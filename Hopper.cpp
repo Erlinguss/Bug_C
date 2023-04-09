@@ -5,9 +5,11 @@
 const int BOARD_WIDTH = 10; // Width of the board in cells
 const int BOARD_HEIGHT = 10; // Height of the board in cells
 
-Hopper::Hopper(int id, std::pair<int, int> position, int size, sf::Color color, int speed, float jumpHeight)
+Hopper::Hopper(int id, std::pair<int, int> position, int size, int speed, float jumpHeight)
 //        : Bug(id, position.first, position.second, Direction::NORTH, size), direction(Direction::NORTH)
-: Bug(id, position.first, position.second, Direction::NORTH, size) {}
+: Bug(id, position.first, position.second, Direction::NORTH, size) {
+    this->m_color = sf::Color::Red;
+}
 
 void Hopper::move() {
     std::pair<int, int> dx_dy = getDirection();

@@ -10,7 +10,7 @@
 
 class Crawler : public Bug {
 public:
-    Crawler(int id, std::pair<int, int> position, int size, sf::Color color, int hopLength, float speed);
+    Crawler(int id, std::pair<int, int> position, int size, int hopLength, float speed);
 
 
     void move();
@@ -24,8 +24,6 @@ private:
     bool isValidPosition(const std::pair<int, int>& position) const;
 
     Direction direction;
-
-    sf::Color color;
 };
 #endif // CRAWLER_H
 

@@ -83,7 +83,8 @@ long Bug::getType() {
 void Bug::tap() {
     if (!m_tapped) {
         m_tapped = true;
-        m_color = sf::Color::White;
+        //m_color = sf::Color::White;
+        // implete the move, and the fight
     }
 }
 
