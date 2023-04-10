@@ -9,7 +9,7 @@
 
 class Hopper : public Bug {
 public:
-    Hopper(int id, std::pair<int, int> position, int size, int hopLength, float speed);
+    Hopper(int id, std::pair<int, int> position,Direction direction, int size,  int hopLength, std::string status);
 
     void move() override;
 
@@ -17,7 +17,6 @@ public:
 
 private:
     int hopLength;
-    int hopCount;
     Direction direction;
 
     std::pair<int, int> getDirection() const;

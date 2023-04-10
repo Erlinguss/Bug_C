@@ -25,15 +25,17 @@ void BugBoard::initializeBoard() {
         istringstream iss(line);
         string bugType;
         int id, x, y, size, hopLength;
-        float speed;
-        iss >> bugType >> id >> x >> y >> size >> hopLength >> speed;
+        std::string status;
+        Direction direction;
+
+        iss >> bugType >> id >> x >> y  >> size >> hopLength >> status;
         Bug* bug = nullptr;
 
         if (bugType == "Crawler") {
-            bug = new Crawler(id, make_pair(x, y), size,hopLength, speed);
+            bug = new Crawler(id, make_pair(x, y), direction, size,hopLength, status);
         }
         else if (bugType == "Hopper") {
-            bug = new Hopper(id, make_pair(x, y), size, hopLength, speed);
+            bug = new Hopper(id, make_pair(x, y), direction,  size, hopLength, status);
         }
         if (bug != nullptr) {
             bugs.push_back(bug);
@@ -47,23 +49,24 @@ void BugBoard::initializeBoard() {
 
 
 void BugBoard::displayBugs() const {
-    cout << "ID\tType\t\tPosition\tSize\tColor" << endl;
-    cout << "--------------------------------------------------" << endl;
-    for (Bug* bug : bugs) {
+    cout << "ID\tType\t\tPosition\tDirection\tSize\t\tHop Length\tStatus" << endl;
+    cout << "--------------------------------------------------------------------" << endl;
+
+    for (const Bug* bug : bugs) {
         string type = "";
-        if (dynamic_cast<Crawler*>(bug) != nullptr) {
+        if (dynamic_cast<const Crawler*>(bug) != nullptr) {
             type = "Crawler";
         }
-        else if (dynamic_cast<Hopper*>(bug) != nullptr) {
+        else if (dynamic_cast<const Hopper*>(bug) != nullptr) {
             type = "Hopper";
         }
         cout << bug->getId() << "\t" << type
-             << "\t\t(" << bug->getPosition().first
-             << "," << bug->getPosition().second
-             << ")\t" << bug->getSize()
-             << "\t\t(" << bug->getColor().r
-             << "," << bug->getColor().g
-             << "," << bug->getColor().b << ")" << endl;
+             << "\t\t(" << bug->getPosition().first << "," << bug->getPosition().second
+             << ")\t\t"
+             << static_cast<bool>(bug->getDirection())// I can not get the direction correctly!
+             << "\t\t\t" << bug->getSize()
+             << "\t\t\t" << bug->getHopLength()
+             << "\t\t\t" << bug->getStatus() << endl;
     }
 }
 
@@ -77,8 +80,11 @@ void BugBoard::findBug() const {
         if (bug->getId() == id) {
             cout << "Bug ID: " << bug->getId() << endl;
             cout << "Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
+           cout << "Direction: "  << static_cast<bool>(bug->getDirection()) << endl;
             cout << "Size: " << bug->getSize() << endl;
-            cout << "Color: (" << bug->getColor().r << "," << bug->getColor().g << "," << bug->getColor().b << ")" << endl;
+            cout << "HopLength : " << bug->getHopLength()<< endl;
+            cout << "Status : " << bug->getStatus() << endl;
+
             if (dynamic_cast<Crawler*>(bug)) {
                 cout << "Bug type: Crawler" << endl;
             }
@@ -112,13 +118,28 @@ void BugBoard::tapBoard() {
     if (!tapped) {
         cout << "No bug found at (" << x << "," << y << ")." << endl;
     }
+
+    // Call move() function on all bugs
+    for (Bug* bug : bugs) {
+        bug->move();
+    }
 }
 
 
 void BugBoard::displayLifeHistory() const {
+
     for (const auto bug : bugs) {
-        cout << "Bug " << bug->getId() << " life history: ";
+        string type = "";
+        if (dynamic_cast<Crawler*>(bug) != nullptr) {
+            type = "Crawler";
+        }
+        else if (dynamic_cast<Hopper*>(bug) != nullptr) {
+            type = "Hopper";
+        }
+        cout << bug->getId() <<" " << type << " Path(life history) : ";
         const auto& path = bug->getPath();
+
+
         if (path.empty()) {
             cout << "No movements yet" << endl;
         } else {
@@ -132,8 +153,7 @@ void BugBoard::displayLifeHistory() const {
 
 
 void BugBoard::displayCells() const {
-    // Clear the screen
-    // system("cls");
+
     cout << "Current Cells:" << endl;
 
     // Iterate over the board
@@ -144,14 +164,14 @@ void BugBoard::displayCells() const {
             for (Bug* bug : bugs) {
                 if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
                     found = true;
+                    // Display bug's type and id
+                    cout << "| " << bug->getType() << " " << bug->getId() << " ";
                     break;
                 }
             }
 
-            // If a bug is present, display its ID
-            if (found) {
-                cout << "| " << "BUG" << " ";
-            } else {
+            // If a bug is not present, display empty cell
+            if (!found) {
                 cout << "| " << "    ";
             }
         }
@@ -188,14 +208,54 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
 }
 
 
-void writeLifeHistoryToFile(const vector<Bug*>& bugs, const string& filename) {
+void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
-    file.open("life_history.txt");
+    file.open("bugs_life_history_date_time.out.txt");
 
-    for (const auto& bug : bugs) {
-        file << "Bug ID: " << bug->getId() << "\n";
-        file << "Bug Type: " << bug->getType()<< "\n";
+    for (const auto bug: bugs) {
+        string type = "";
+        if (dynamic_cast<Crawler *>(bug) != nullptr) {
+            type = "Crawler";
+        } else if (dynamic_cast<Hopper *>(bug) != nullptr) {
+            type = "Hopper";
+        }
+
+        for (const auto &bug: bugs) {
+            file << "Bug ID: " << bug->getId() << "\n";
+            file << "Bug Type: " << type << "\n";
+        }
+
+        file.close();
     }
-
-    file.close();
+}
+void BugBoard::eat() {
+    // Check for bugs on the same cell
+    for (size_t i = 0; i < bugs.size(); ++i) {
+        for (size_t j = i + 1; j < bugs.size(); ++j) {
+            if (bugs[i]->getPosition() == bugs[j]->getPosition()) {
+                // Determine which bug eats the other
+                if (bugs[i]->getSize() > bugs[j]->getSize()) {
+                    bugs[i]->eat(bugs[j]->getSize());
+                    bugs[j]->setAlive(false);
+                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
+                    bugs[j]->eat(bugs[i]->getSize());
+                    bugs[i]->setAlive(false);
+                } else {
+                    // Randomly determine which bug eats the other
+                    int winner = rand() % 2;
+                    if (winner == 0) {
+                        bugs[i]->eat(bugs[j]->getSize());
+                        bugs[j]->setAlive(false);
+                    } else {
+                        bugs[j]->eat(bugs[i]->getSize());
+                        bugs[i]->setAlive(false);
+                    }
+                }
+            }
+        }
+    }
+    // Remove dead bugs
+    bugs.erase(remove_if(bugs.begin(), bugs.end(), [](Bug* bug) {
+        return !bug->isAlive();
+    }), bugs.end());
 }

@@ -1039,6 +1039,8 @@ CMakeFiles/Bug_C.dir/Hopper.cpp.obj: C:/Users/User/CLionProjects/bug_c/Hopper.cp
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/numeric \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_numeric.h
 
+CMakeFiles/Bug_C.dir/SuperBug.cpp.obj: C:/Users/User/CLionProjects/bug_c/SuperBug.cpp
+
 CMakeFiles/Bug_C.dir/main.cpp.obj: C:/Users/User/CLionProjects/bug_c/main.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/iostream \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -1291,17 +1293,6 @@ CMakeFiles/Bug_C.dir/main.cpp.obj: C:/Users/User/CLionProjects/bug_c/main.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_list.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/allocated_ptr.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/list.tcc \
-  C:/Users/User/CLionProjects/bug_c/Crawler.h \
-  C:/Users/User/CLionProjects/bug_c/Hopper.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/random \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cmath \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/x86_64-w64-mingw32/include/math.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/limits \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/random.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/opt_random.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/random.tcc \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/numeric \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_numeric.h \
   C:/Users/User/CLionProjects/bug_c/Bugboard.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/memory \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_raw_storage_iter.h \
@@ -1314,7 +1305,18 @@ CMakeFiles/Bug_C.dir/main.cpp.obj: C:/Users/User/CLionProjects/bug_c/main.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/shared_ptr_atomic.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/atomic_base.h \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/atomic_lockfree_defines.h \
-  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward/auto_ptr.h
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward/auto_ptr.h \
+  C:/Users/User/CLionProjects/bug_c/Crawler.h \
+  C:/Users/User/CLionProjects/bug_c/Hopper.h \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/random \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cmath \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/x86_64-w64-mingw32/include/math.h \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/limits \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/random.h \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/opt_random.h \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/random.tcc \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/numeric \
+  C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_numeric.h
 
 
 C:/Users/User/CLionProjects/bug_c/Bug.cpp:
@@ -1874,5 +1876,7 @@ C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32
 C:/Users/User/CLionProjects/bug_c/Crawler.cpp:
 
 C:/Users/User/CLionProjects/bug_c/Hopper.cpp:
+
+C:/Users/User/CLionProjects/bug_c/SuperBug.cpp:
 
 C:/Users/User/CLionProjects/bug_c/main.cpp:

@@ -3,7 +3,6 @@
 #ifndef BUGBOARD_H
 #define BUGBOARD_H
 
-
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -29,16 +28,18 @@ public:
     void displayLifeHistory() const;
     void displayCells() const;
     void runSimulation(sf::RenderWindow& window);
-
+    void writeLifeHistoryToFile();
+    void eat();
 
 
 private:
-    vector<vector<Bug*>> board_;
+
     vector<Bug*> bugs;
-    vector<Bug*> aliveBugs_;
-    int numAliveBugs_;
 
     void initializeBoard();
+
+
+
 };
 
 #endif

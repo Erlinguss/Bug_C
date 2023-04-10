@@ -10,8 +10,7 @@
 
 class Crawler : public Bug {
 public:
-    Crawler(int id, std::pair<int, int> position, int size, int hopLength, float speed);
-
+    Crawler(int id, std::pair<int, int> position, Direction direction,int size, int hopLength, std::string status);
 
     void move();
 

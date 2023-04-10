@@ -4,15 +4,21 @@
 #include <utility>
 #include<iostream>
 #include "Bug.h"
+using namespace std;
 //
-Bug::Bug(int id, int x, int y, Direction direction, int size)
-        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) {}
-
-//Bug::Bug(int id, int x, int y, Direction direction, int size)
-//        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true), m_tapped(false), m_color(sf::Color::Green), m_type(0) {}
+Bug::Bug(int id, int x, int y, Direction direction, int size, int hopLength, std::string status)
+        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), hopLength(hopLength), status(status), alive(true) {}
 
 int Bug::getId() const {
     return id;
+}
+
+int Bug::getHopLength() const{
+    return hopLength;
+}
+
+std::string Bug::getStatus() const{
+    return status;
 }
 
 std::pair<int, int> Bug::getPosition() const {
@@ -83,6 +89,8 @@ long Bug::getType() {
 void Bug::tap() {
     if (!m_tapped) {
         m_tapped = true;
+
+        move();
         //m_color = sf::Color::White;
         // implete the move, and the fight
     }
@@ -99,12 +107,18 @@ void Bug::collide(Bug *pBug) {
     }
 }
 
-void Bug::addToPath(const std::pair<int, int>& point) {
+void Bug::addToPath(const pair<int, int>& point) {
     path.push_back(point);
 }
-void Bug::setPosition(const std::pair<int, int>& new_position) {
+void Bug::setPosition(const pair<int, int>& new_position) {
     position = new_position;
 }
-bool Bug::isOccupied(const std::pair<int, int>& position) const {
+bool Bug::isOccupied(const pair<int, int>& position) const {
     return (getPosition() == position);
 }
+
+void Bug::eat(int i) {
+
+}
+
+

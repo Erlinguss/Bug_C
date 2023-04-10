@@ -4,22 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <sstream>
 #include "Bug.h"
-#include "Crawler.h"
-#include "Hopper.h"
 #include "Bugboard.h"
 using namespace std;
 
 const int CELL_SIZE = 50; // Size of each cell in pixels
-
-
-void initializeBoard(vector<Bug*>& bugs);
-void displayBugs(const vector<Bug*>& bugs);
-void findBug(const vector<Bug*>& bugs);
-void tapBoard(vector<Bug*>& bugs);
-void displayLifeHistory(const vector<Bug*>& bugs);
-void displayCells(const vector<Bug*>& bugs);
-void runSimulation(vector<Bug*>& bugs);
-void writeLifeHistoryToFile(const vector<Bug*>& bugs);
 
 int main() {
     // Create the window
@@ -27,7 +15,6 @@ int main() {
 
     // Create the bugs vector
     vector<Bug *> bugs;
-
 
     // Initialize the bug board
     BugBoard board;
@@ -65,26 +52,13 @@ int main() {
                         break;
                     case sf::Keyboard::Num7:
                         // Write Life History of all Bugs to file
-                        ofstream outFile("life_history.txt");
-                        for (Bug* bug : bugs) {
-                            outFile << bug->getId() << ": ";
-                            for (auto& pos : bug->getPath()) {
-                                outFile << "(" << pos.first << "," << pos.second << ") ";
-                            }
-                            outFile <<endl;
-                        }
-                        outFile.close();
+                        board.writeLifeHistoryToFile();
                         break;
 //                    default:
 //                   break;
                 }
             }
             }
-
-            // Clear the screen
-            //=================================================
-            // window.clear(sf::Color::White);
-            //=================================================
 
             window.clear(sf::Color(127, 127, 127));
 
@@ -100,7 +74,6 @@ int main() {
             }
 
 
-            //=================================================
             for (Bug *bug: bugs) {
                 sf::CircleShape bugShape(bug->getSize() / 2);
                 bugShape.setPosition(bug->getPosition().first + CELL_SIZE / 2 - bugShape.getRadius(),
@@ -109,7 +82,6 @@ int main() {
                 window.draw(bugShape);
             }
 
-            //=================================================
             // Display the window
             window.display();
         }

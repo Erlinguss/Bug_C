@@ -10,6 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Bug_C.dir/Crawler.cpp.obj.d"
   "CMakeFiles/Bug_C.dir/Hopper.cpp.obj"
   "CMakeFiles/Bug_C.dir/Hopper.cpp.obj.d"
+  "CMakeFiles/Bug_C.dir/SuperBug.cpp.obj"
+  "CMakeFiles/Bug_C.dir/SuperBug.cpp.obj.d"
   "CMakeFiles/Bug_C.dir/main.cpp.obj"
   "CMakeFiles/Bug_C.dir/main.cpp.obj.d"
   "libBug_C.dll.a"
