@@ -45,25 +45,25 @@ int main() {
             // Check for menu selections
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
-                    case sf::Keyboard::Num2:
+                    case sf::Keyboard::Num1:
                         board.displayBugs();
                         break;
-                    case sf::Keyboard::Num3:
+                    case sf::Keyboard::Num2:
                         board.findBug();
                         break;
-                    case sf::Keyboard::Num4:
+                    case sf::Keyboard::Num3:
                         board.tapBoard();
                         break;
-                    case sf::Keyboard::Num5:
+                    case sf::Keyboard::Num4:
                         board.runSimulation(window);
                         break;
-                    case sf::Keyboard::Num6:
+                    case sf::Keyboard::Num5:
                         board.displayLifeHistory();
                         break;
-                    case sf::Keyboard::Num7:
+                    case sf::Keyboard::Num6:
                         board.displayCells();
                         break;
-                    case sf::Keyboard::Num8:
+                    case sf::Keyboard::Num7:
                         // Write Life History of all Bugs to file
                         ofstream outFile("life_history.txt");
                         for (Bug* bug : bugs) {
