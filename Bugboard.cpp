@@ -60,10 +60,30 @@ void BugBoard::displayBugs() const {
         else if (dynamic_cast<const Hopper*>(bug) != nullptr) {
             type = "Hopper";
         }
+
+        string direction;
+        switch (bug->getDirection()) {
+            case Direction::NORTH:
+                direction = "NORTH";
+                break;
+            case Direction::SOUTH:
+                direction = "SOUTH";
+                break;
+            case Direction::EAST:
+                direction = "EAST";
+                break;
+            case Direction::WEST:
+                direction = "WEST";
+                break;
+            default:
+                direction = "UNKNOWN";
+                break;
+        }
+
         cout << bug->getId() << "\t" << type
              << "\t\t(" << bug->getPosition().first << "," << bug->getPosition().second
              << ")\t\t"
-             << static_cast<bool>(bug->getDirection())// I can not get the direction correctly!
+             << direction // Use the string representation of direction
              << "\t\t\t" << bug->getSize()
              << "\t\t\t" << bug->getHopLength()
              << "\t\t\t" << bug->getStatus() << endl;
@@ -85,10 +105,10 @@ void BugBoard::findBug() const {
             cout << "HopLength : " << bug->getHopLength()<< endl;
             cout << "Status : " << bug->getStatus() << endl;
 
-            if (dynamic_cast<Crawler*>(bug)) {
+            if (dynamic_cast<Crawler*>(bug) != nullptr) {
                 cout << "Bug type: Crawler" << endl;
             }
-            else if (dynamic_cast<Hopper*>(bug)) {
+            else if (dynamic_cast<Hopper*>(bug) != nullptr) {
                 cout << "Bug type: Hopper" << endl;
             }
             cout << endl;

@@ -1,10 +1,11 @@
 //
 // Created by User on 19/03/2023.
 //
+
 #include <utility>
 #include<iostream>
 #include "Bug.h"
-using namespace std;
+
 //
 Bug::Bug(int id, int x, int y, Direction direction, int size, int hopLength, std::string status)
         : id(id), position(std::make_pair(x, y)), direction(direction), size(size), hopLength(hopLength), status(status), alive(true) {}
@@ -40,10 +41,10 @@ bool Bug::isAlive() const {
 void Bug::setAlive(bool alive) {
     this->alive = alive;
 }
+
 const std::list<std::pair<int, int>>& Bug::getPath() const {
     return path;
 }
-
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -56,7 +57,7 @@ bool Bug::isWayBlocked(int board_size) const {
         case Direction::WEST:
             return position.second == 0;
         default:
-            return false;
+            throw std::runtime_error("Invalid direction");
     }
 }
 
@@ -75,6 +76,8 @@ void Bug::move() {
         case Direction::WEST:
             position.second--;
             break;
+        default:
+            throw std::runtime_error("Invalid direction");
     }
 }
 
@@ -91,12 +94,11 @@ void Bug::tap() {
         m_tapped = true;
 
         move();
-        //m_color = sf::Color::White;
-        // implete the move, and the fight
+        // implement the move, and the fight
     }
 }
 
-void Bug::collide(Bug *pBug) {
+void Bug::collide(Bug* pBug) {
     if (pBug != nullptr) {
         if (pBug->isAlive() && isAlive()) {
             setAlive(false);
@@ -107,18 +109,18 @@ void Bug::collide(Bug *pBug) {
     }
 }
 
-void Bug::addToPath(const pair<int, int>& point) {
+void Bug::addToPath(const std::pair<int, int>& point) {
     path.push_back(point);
 }
-void Bug::setPosition(const pair<int, int>& new_position) {
+
+void Bug::setPosition(const std::pair<int, int>& new_position) {
     position = new_position;
 }
-bool Bug::isOccupied(const pair<int, int>& position) const {
+
+bool Bug::isOccupied(const std::pair<int, int>& position) const {
     return (getPosition() == position);
 }
 
 void Bug::eat(int i) {
-
+    // implement the eat function
 }
-
-
