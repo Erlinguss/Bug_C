@@ -25,17 +25,17 @@ void BugBoard::initializeBoard() {
         istringstream iss(line);
         string bugType;
         int id, x, y, size, hopLength;
-        std::string status;
+        bool alive;
         Direction direction;
 
-        iss >> bugType >> id >> x >> y  >> size >> hopLength >> status;
+        iss >> bugType >> id >> x >> y  >> size >> hopLength >> alive;
         Bug* bug = nullptr;
 
         if (bugType == "Crawler") {
-            bug = new Crawler(id, make_pair(x, y), direction, size,hopLength, status);
+            bug = new Crawler(id, make_pair(x, y), direction, size,hopLength, alive);
         }
         else if (bugType == "Hopper") {
-            bug = new Hopper(id, make_pair(x, y), direction,  size, hopLength, status);
+            bug = new Hopper(id, make_pair(x, y), direction,  size, hopLength, alive);
         }
         if (bug != nullptr) {
             bugs.push_back(bug);
@@ -185,7 +185,7 @@ void BugBoard::displayCells() const {
                 if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
                     found = true;
                     // Display bug's type and id
-                    cout << "| " << bug->getType() << " " << bug->getId() << " ";
+                    cout << "| " << bug->getType() << " " << bug->getId() << "  ";
                     break;
                 }
             }

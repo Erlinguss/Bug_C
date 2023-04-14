@@ -10,12 +10,14 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics.hpp>
 
+using namespace std;
+
 
 enum class Direction { NORTH, EAST, SOUTH, WEST };
 
 class Bug {
 public:
-    Bug(int id, int x, int y, Direction direction, int size, int hopLength, std::string status);
+    Bug(int id, int x, int y, Direction direction, int size, int hopLength, bool alive);
 
     virtual ~Bug() {}
 
@@ -44,7 +46,8 @@ public:
 
     const sf::Color &getColor();
 
-    long getType();
+    string getType() const;
+    void  setType(string type);
 
     void tap();
 
@@ -62,14 +65,12 @@ protected:
     bool alive;
     std::list<std::pair<int, int>> path;
     int hopLength;
-    std::string status;
-
-
+    string status;
+    string type;
     bool isWayBlocked(int board_size) const;
-
     bool m_tapped;
     sf::Color m_color;
-    long m_type;
+    //long m_type;
 
 };
 

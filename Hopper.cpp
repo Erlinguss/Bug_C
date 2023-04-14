@@ -5,10 +5,11 @@
 const int BOARD_WIDTH = 10; // Width of the board in cells
 const int BOARD_HEIGHT = 10; // Height of the board in cells
 
-Hopper::Hopper(int id, std::pair<int, int> position, Direction direction, int size, int hopLength, std::string status)
-: Bug(id, position.first, position.second, direction, size, hopLength, status) {
+Hopper::Hopper(int id, std::pair<int, int> position, Direction direction, int size, int hopLength, bool alive)
+: Bug(id, position.first, position.second, direction, size, hopLength, alive) {
     this->m_color = sf::Color::Red;
 }
+
 
 void Hopper::move() {
     std::pair<int, int> dx_dy = getDirection();
@@ -27,14 +28,14 @@ void Hopper::move() {
 }
 
 void Hopper::setRandomDirection() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dis(1, 4);
+    static random_device rd;
+    static mt19937 gen(rd());
+    static uniform_int_distribution<> dis(1, 4);
     int randInt = dis(gen);
     direction = static_cast<Direction>(randInt);
 }
 
-std::pair<int, int> Hopper::getDirection() const {
+pair<int, int> Hopper::getDirection() const {
     int dx = 0, dy = 0;
     switch (direction) {
         case Direction::NORTH:
@@ -50,10 +51,10 @@ std::pair<int, int> Hopper::getDirection() const {
             dx = -1;
             break;
     }
-    return std::make_pair(dx, dy);
+    return make_pair(dx, dy);
 }
 
-bool Hopper::canHop(const std::pair<int, int>& direction) const {
+bool Hopper::canHop(const pair<int, int>& direction) const {
     int dx = direction.first;
     int dy = direction.second;
 

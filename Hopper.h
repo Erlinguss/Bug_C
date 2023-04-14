@@ -9,11 +9,12 @@
 
 class Hopper : public Bug {
 public:
-    Hopper(int id, std::pair<int, int> position,Direction direction, int size,  int hopLength, std::string status);
+    Hopper(int id, std::pair<int, int> position,Direction direction, int size,  int hopLength, bool alive);
 
     void move() override;
 
     void setRandomDirection();
+
 
 private:
     int hopLength;

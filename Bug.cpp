@@ -7,44 +7,59 @@
 #include "Bug.h"
 
 //
-Bug::Bug(int id, int x, int y, Direction direction, int size, int hopLength, std::string status)
-        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), hopLength(hopLength), status(status), alive(true) {}
+Bug::Bug(int id, int x, int y, Direction direction, int size, int hopLength, bool alive)
+        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), hopLength(hopLength), alive(true) {
+
+}
 
 int Bug::getId() const {
-    return id;
+    return this-> id;
 }
 
 int Bug::getHopLength() const{
-    return hopLength;
+    return this-> hopLength;
 }
 
-std::string Bug::getStatus() const{
-    return status;
+string Bug::getStatus() const{
+    return this-> status;
 }
 
-std::pair<int, int> Bug::getPosition() const {
+pair<int, int> Bug::getPosition() const {
     return position;
 }
 
 Direction Bug::getDirection() const {
-    return direction;
+    return this -> direction;
 }
 
 int Bug::getSize() const {
-    return size;
+    return this-> size;
+}
+
+void Bug::setSize(int size) {
+    this ->size =size;
 }
 
 bool Bug::isAlive() const {
-    return alive;
+    return this -> alive;
 }
 
 void Bug::setAlive(bool alive) {
     this->alive = alive;
 }
 
-const std::list<std::pair<int, int>>& Bug::getPath() const {
-    return path;
+const list<std::pair<int, int>>& Bug::getPath() const {
+    return this-> path;
 }
+
+string Bug::getType() const{
+    return this->type;
+}
+
+void Bug:: setType(string type){
+    this->type= type;
+}
+
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -85,9 +100,7 @@ const sf::Color& Bug::getColor() {
     return  m_color;
 }
 
-long Bug::getType() {
-    return m_type;
-}
+
 
 void Bug::tap() {
     if (!m_tapped) {

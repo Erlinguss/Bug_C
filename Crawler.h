@@ -7,20 +7,22 @@
 
 #pragma once
 #include "Bug.h"
+#include <string>
+
 
 class Crawler : public Bug {
 public:
-    Crawler(int id, std::pair<int, int> position, Direction direction,int size, int hopLength, std::string status);
+    Crawler(int id, pair<int, int> position, Direction direction,int size, int hopLength, bool alive);
 
-    void move();
+    void move() override;
 
 private:
 
     Direction getRandomDirection() const;
 
-    std::pair<int, int> getNextPosition() const;
+    pair<int, int> getNextPosition() const;
 
-    bool isValidPosition(const std::pair<int, int>& position) const;
+    bool isValidPosition(const pair<int, int>& position) const;
 
     Direction direction;
 };
