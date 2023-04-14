@@ -14,10 +14,10 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * BOARD_WIDTH, CELL_SIZE * BOARD_HEIGHT), "Bug Board");
 
     // Create the bugs vector
-    vector<Bug *> bugs;
+    vector<Bug *> bug_vector;
 
     // Initialize the bug board
-    BugBoard board;
+     BugBoard board;
 
     // Start the game loop
     while (window.isOpen()) {
@@ -33,24 +33,28 @@ int main() {
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Num1:
-                        board.displayBugs();
+                        board.initializeBoard();
+                        cout << "File loaded" << endl;
                         break;
                     case sf::Keyboard::Num2:
-                        board.findBug();
+                        board.displayBugs();
                         break;
                     case sf::Keyboard::Num3:
-                        board.tapBoard();
+                        board.findBug();
                         break;
                     case sf::Keyboard::Num4:
-                        board.runSimulation(window);
+                        board.tapBoard();
                         break;
                     case sf::Keyboard::Num5:
-                        board.displayLifeHistory();
+                        board.runSimulation(window);
                         break;
                     case sf::Keyboard::Num6:
-                        board.displayCells();
+                        board.displayLifeHistory();
                         break;
                     case sf::Keyboard::Num7:
+                        board.displayCells();
+                        break;
+                    case sf::Keyboard::Num8:
                         // Write Life History of all Bugs to file
                         board.writeLifeHistoryToFile();
                         break;
@@ -74,7 +78,7 @@ int main() {
             }
 
 
-            for (Bug *bug: bugs) {
+            for (Bug *bug: bug_vector) {
                 sf::CircleShape bugShape(bug->getSize() / 2);
                 bugShape.setPosition(bug->getPosition().first + CELL_SIZE / 2 - bugShape.getRadius(),
                                      bug->getPosition().second + CELL_SIZE / 2 - bugShape.getRadius());
@@ -87,7 +91,7 @@ int main() {
         }
 
         // Delete the bugs
-        for (Bug *bug: bugs) {
+        for (Bug *bug: bug_vector) {
             delete bug;
         }
 

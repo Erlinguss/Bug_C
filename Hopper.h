@@ -9,18 +9,15 @@
 
 class Hopper : public Bug {
 public:
-    Hopper(int id, std::pair<int, int> position,Direction direction, int size,  int hopLength, bool alive);
+    Hopper(int id, pair<int, int> position, Direction direction, int size, int hopLength, bool alive, list<pair<int, int>> path);
 
     void move() override;
-
-    void setRandomDirection();
-
+    const pair<int, int> getDirection() const;
+    int getHopLength() const;
 
 private:
     int hopLength;
-    Direction direction;
-
-    std::pair<int, int> getDirection() const;
+    void setRandomDirection();
     bool canHop(const std::pair<int, int>& direction) const;
 };
 
