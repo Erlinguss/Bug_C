@@ -1,6 +1,6 @@
 Bug ID: 1
 Bug Type: Crawler
 Bug ID: 2
-Bug Type: Crawler
+Bug Type: Hopper
 Bug ID: 3
 Bug Type: Crawler

@@ -4,12 +4,15 @@
 
 #include <utility>
 #include<iostream>
+#include <string>
 #include "Bug.h"
+using namespace std;
 
-//
-Bug::Bug(int id, int x, int y, Direction direction, int size, int hopLength, bool alive)
-        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), hopLength(hopLength), alive(true) {
 
+Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive,  list<pair<int, int>> path)
+        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) , path(path) {
+    this->path = path;
+    this->alive = alive;
 }
 
 int Bug::getId() const {
@@ -20,9 +23,6 @@ int Bug::getHopLength() const{
     return this-> hopLength;
 }
 
-string Bug::getStatus() const{
-    return this-> status;
-}
 
 pair<int, int> Bug::getPosition() const {
     return position;
@@ -60,6 +60,47 @@ void Bug:: setType(string type){
     this->type= type;
 }
 
+void Bug::BugData() {
+
+    string BugAlive = (this->alive ? "Alive" : "Dead");
+
+    string BugDirection;
+    switch (this->direction) {
+        case Direction::NORTH:
+            BugDirection = "North";
+            break;
+        case Direction::EAST:
+            BugDirection = "East";
+            break;
+        case Direction::SOUTH:
+            BugDirection = "South";
+            break;
+        case Direction::WEST:
+            BugDirection = "West";
+            break;
+        default:
+            BugDirection = "UNKNOWN";
+            break;
+
+            if (this->type == "Crawler") {
+                cout << "Crawler " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << endl;
+            } else if (this->type == "Hopper") {
+                cout << "Hopper " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << " hop length "
+                     << this->getHopLength() << endl;
+            } else if (this->type == "SuperBug") {
+                cout << "SuperBug " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << endl;
+            }
+    }
+}
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -96,10 +137,9 @@ void Bug::move() {
     }
 }
 
-const sf::Color& Bug::getColor() {
+const sf::Color& Bug::getColor() const {
     return  m_color;
 }
-
 
 
 void Bug::tap() {
@@ -134,6 +174,16 @@ bool Bug::isOccupied(const std::pair<int, int>& position) const {
     return (getPosition() == position);
 }
 
-void Bug::eat(int i) {
-    // implement the eat function
+Bug* Bug::eat(Bug& otherBug) {
+    if (this->getSize() != otherBug.getSize()) {
+        Bug* biggerBug = (this->getSize() > otherBug.getSize()) ? this : &otherBug;
+        Bug* smallerBug = (this->getSize() < otherBug.getSize()) ? this : &otherBug;
+        smallerBug->setAlive(false);
+        biggerBug->setSize(biggerBug->getSize() + smallerBug->getSize());
+        cout << "Bug " << biggerBug->getId() << " ate bug " << smallerBug->getId() << endl;
+        return biggerBug;
+    } else {
+        cout << "Bug " << this->getId() << " and bug " << otherBug.getId() << " are the same size and cannot eat each other" << endl;
+        return nullptr;
+    }
 }

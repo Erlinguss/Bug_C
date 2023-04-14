@@ -12,7 +12,7 @@
 
 class Crawler : public Bug {
 public:
-    Crawler(int id, pair<int, int> position, Direction direction,int size, int hopLength, bool alive);
+    Crawler(int id, pair<int, int> position, Direction direction,int size, bool alive, list<pair<int, int>> path);
 
     void move() override;
 

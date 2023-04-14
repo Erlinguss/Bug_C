@@ -30,6 +30,7 @@ public:
     void runSimulation(sf::RenderWindow& window);
     void writeLifeHistoryToFile();
     void eat();
+    void BugData();
 
 
 private:
@@ -39,7 +40,7 @@ private:
     void initializeBoard();
 
 
-
+    void GeneralData() const;
 };
 
 #endif
