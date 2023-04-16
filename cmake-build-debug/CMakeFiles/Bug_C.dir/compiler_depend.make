@@ -1040,8 +1040,6 @@ CMakeFiles/Bug_C.dir/Hopper.cpp.obj: C:/Users/User/CLionProjects/bug_c/Hopper.cp
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/numeric \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/stl_numeric.h
 
-CMakeFiles/Bug_C.dir/SuperBug.cpp.obj: C:/Users/User/CLionProjects/bug_c/SuperBug.cpp
-
 CMakeFiles/Bug_C.dir/main.cpp.obj: C:/Users/User/CLionProjects/bug_c/main.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/iostream \
   C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -1879,7 +1877,5 @@ C:/Program\ Files/JetBrains/CLion\ 2022.3.3/bin/mingw/lib/gcc/x86_64-w64-mingw32
 C:/Users/User/CLionProjects/bug_c/Crawler.cpp:
 
 C:/Users/User/CLionProjects/bug_c/Hopper.cpp:
-
-C:/Users/User/CLionProjects/bug_c/SuperBug.cpp:
 
 C:/Users/User/CLionProjects/bug_c/main.cpp:

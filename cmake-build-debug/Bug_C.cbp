@@ -110,12 +110,6 @@
 		<Unit filename="C:/Users/User/CLionProjects/bug_c/Hopper.h">
 			<Option target="Bug_C"/>
 		</Unit>
-		<Unit filename="C:/Users/User/CLionProjects/bug_c/SuperBug.cpp">
-			<Option target="Bug_C"/>
-		</Unit>
-		<Unit filename="C:/Users/User/CLionProjects/bug_c/SuperBug.h">
-			<Option target="Bug_C"/>
-		</Unit>
 		<Unit filename="C:/Users/User/CLionProjects/bug_c/main.cpp">
 			<Option target="Bug_C"/>
 		</Unit>

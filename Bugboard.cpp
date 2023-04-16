@@ -258,9 +258,11 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
     cout << "Enter the number of simulation steps: ";
     cin >> numSteps;
 
+    int numAliveBugs = 0; // Track the number of alive bugs
+
     // Run the simulation for the specified number of steps
-    bool gameOver = false;
-    for (int i = 0; i < numSteps && !gameOver; i++) {
+    for (int i = 0; i < numSteps; i++) {
+        // Move bugs and check for collisions
         for (auto bug : bugs) {
             if (bug->isAlive()) {
                 // Move the bug
@@ -270,12 +272,15 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
                 for (const auto other : bugs) {
                     if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
                         bug->collide(other);
+                    }
+                }
 
-                        // Check if game over condition is met (e.g. one of the bugs wins)
-                        if (!other->isAlive()) {
-                            gameOver = true;
-                            bug->setAlive(true);
-                            break; // Exit the loop if game over condition is met
+                // Check for collision with neighboring bugs
+                for (auto other : bugs) {
+                    if (bug != other && bug->isAlive() && other->isAlive()) {
+                        if (abs(bug->getPosition().first - other->getPosition().first) <= 1 &&
+                            abs(bug->getPosition().second - other->getPosition().second) <= 1) {
+                            bug->collide(other);
                         }
                     }
                 }
@@ -285,15 +290,24 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
         displayCells();
         sf::sleep(sf::seconds(0.1));
 
-        // Check if game over condition is met, and exit the loop if it is
-        if (gameOver) {
-            break;
+        // Update the number of alive bugs after each simulation step
+        numAliveBugs = 0;
+        for (const auto bug : bugs) {
+            if (bug->isAlive()) {
+                numAliveBugs++;
+            }
+        }
+
+        // Check if only one bug is alive and exit the simulation if true
+        if (numAliveBugs == 1) {
+            cout << "Game Over!" << endl;
+            return;
         }
     }
 
     cout << "Game Over!" << endl;
-    // resetGame();
 }
+
 
 void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
