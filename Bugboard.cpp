@@ -6,19 +6,20 @@
 
 using namespace std;
 
+const int CELL_SIZE = 50; // Size of each cell in pixels
+
 BugBoard::BugBoard() {
   //  initializeBoard();
 }
 
-vector<Bug*> BugBoard::getBoard() {
-    return bugs;
-}
+//vector<Bug*> BugBoard::getBoard() {
+//    return bugs;
+//}
+//void BugBoard::addBug(Bug* bug) {
+//    bugs.push_back(bug);
+//}
 
-void BugBoard::addBug(Bug* bug) {
-    bugs[bug->getPosition().first][bug->getPosition().second] = *bug;
-}
-
-void BugBoard::initializeBoard(vector<Bug*>& bug_vector, BugBoard& board) {
+void BugBoard::initializeBoard() {
 
     // Clear the bugs vector
     for (Bug* bug : bugs) {
@@ -34,183 +35,94 @@ void BugBoard::initializeBoard(vector<Bug*>& bug_vector, BugBoard& board) {
     }
     string line;
     while (getline(inFile, line)) {
-        istringstream iss(line);
+        istringstream ss(line);
         string bugType;
         int id, x, y, size, hopLength;
         bool alive;
         Direction direction;
         string temp;
 
-        iss >> bugType >> id >> x >> y  >> size >> hopLength >> alive;
+        getline(ss, bugType, ';');
+        //ss>>id >> x >> y  >> size >> hopLength >> alive;
 
-        getline(iss, temp, ';');
-        if (!temp.empty()) {
-            try {
-                alive = stoi(temp); // Extract alive value
-            } catch (const std::invalid_argument& e) {
-                cerr << "Failed to convert alive value: " << temp << endl;
-                continue; // Skip current line and move to next line
-            }
-        } else {
-            // Set a default value for alive (e.g., true or false)
-            alive = false; // or true, depending on your desired default value
-        }
 
-        Bug* bug = nullptr;
+        // Set a default value for alive (e.g., true or false)
+        alive = false; // or true, depending on desired default value
 
         if (bugType == "C") {
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             id = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             x = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             y = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             direction = static_cast<Direction>(stoi(temp));
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             size = stoi(temp);
 
             Crawler* crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
             crawler->setType("Crawler");
-            bug_vector.push_back(crawler);
-            board.addBug(crawler);
+            bugs.push_back(crawler);
         }
         else if (bugType == "H") {
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             id = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             x = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             y = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             direction = static_cast<Direction>(stoi(temp));
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             size = stoi(temp);
-            getline(iss, temp, ';');
+            getline(ss, temp, ';');
             hopLength = stoi(temp);
-
             Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, hopLength, alive, list<pair<int, int>>());
             hopper->setType("Hopper");
-            bug_vector.push_back(hopper);
-            board.addBug(hopper);
-
+            bugs.push_back(hopper);
         }
-
-//        if (bug != nullptr) {
-//            bugs.push_back(bug);
-//        }
     }
     inFile.close();
 }
-//
-//void BugBoard::displayBugs(vector<Bug*>& bug_vector) {
-//
-//    for(int i = 0; i < bug_vector.size(); i++) {
-//        if(bug_vector[i]->getType() == "Crawler") {
-//            bug_vector[i]->BugData();
-//        } else if(bug_vector[i]->getType() == "Hopper") {
-//            bug_vector[i]->BugData();
-//        }
-//    }
-//}
 
-void BugBoard::displayBugs() const {
+void BugBoard:: header() const{
+    cout << " "<< endl;
     cout << "--------------------------------------------------------------------------" << endl;
     cout << "ID\tType\t\tPosition\tDirection\t\tSize\t\tHop Length\tStatus" << endl;
     cout << "--------------------------------------------------------------------------" << endl;
 
-    for (const Bug* bug : bugs) {
+}
 
-        //bug->BugData();
+void BugBoard:: footer() const{
+      cout << "--------------------------------------------------------------------------" << endl;
+      cout << " "<< endl;
 
-        string type = "";
-        if (dynamic_cast<const Crawler *>(bug) != nullptr) {
-            type = "Crawler";
-        } else if (dynamic_cast<const Hopper *>(bug) != nullptr) {
-            type = "Hopper";
-        }
+}
 
-        string direction;
-        switch (bug->getDirection()) {
-            case Direction::NORTH:
-                direction = "NORTH";
-                break;
-            case Direction::SOUTH:
-                direction = "SOUTH";
-                break;
-            case Direction::EAST:
-                direction = "EAST";
-                break;
-            case Direction::WEST:
-                direction = "WEST";
-                break;
-            default:
-                direction = "UNKNOWN";
-                break;
-        }
-
-        cout << bug->getId() << "\t" << type
-             << "\t\t(" << bug->getPosition().first << "," << bug->getPosition().second
-             << ")\t\t"
-             << direction
-             << "\t\t\t" << bug->getSize()
-             << "\t\t\t" << bug->getHopLength()
-             << "\t\t\t" << bug->isAlive() << endl;
+void BugBoard::displayBugs() const {
+   header();
+    for ( Bug *bug : bugs) {
+        bug->BugData();
     }
-
-        cout << "--------------------------------------------------------------------------" << endl;
-    }
-
+   footer();
+}
 
 void BugBoard::findBug() const {
     int id;
     cout << "Enter the ID of the bug you want to find: ";
     cin >> id;
-
     bool found = false;
-    for (Bug* bug : bugs) {
+
+    header();
+    for (Bug *bug : bugs) {
         if (bug->getId() == id) {
-            cout << "Bug ID: " << bug->getId() << endl;
-
-            if (dynamic_cast<Crawler*>(bug) != nullptr) {
-                cout << "Bug type: Crawler" << endl;
-            }
-            else if (dynamic_cast<Hopper*>(bug) != nullptr) {
-                cout << "Bug type: Hopper" << endl;
-            }
-
-            string direction;
-            switch (bug->getDirection()) {
-                case Direction::NORTH:
-                    direction = "NORTH";
-                    break;
-                case Direction::SOUTH:
-                    direction = "SOUTH";
-                    break;
-                case Direction::EAST:
-                    direction = "EAST";
-                    break;
-                case Direction::WEST:
-                    direction = "WEST";
-                    break;
-                default:
-                    direction = "UNKNOWN";
-                    break;
-            }
-
-            cout << "Position: (" << bug->getPosition().first << "," << bug->getPosition().second << ")" << endl;
-            cout << "Direction: "  << direction << endl;
-         //   cout << "Direction: "  << static_cast<bool>(bug->getDirection()) << endl;
-            cout << "Size: " << bug->getSize() << endl;
-            cout << "HopLength : " << bug->getHopLength()<< endl;
-            cout << "Status : " << bug->isAlive() << endl;
-
-
-            cout << endl;
             found = true;
+            bug->BugData();
             break;
         }
     }
+    footer();
 
     if (!found) {
         cout << "Bug with ID " << id << " not found." << endl;
@@ -284,7 +196,6 @@ void BugBoard::displayCells() const {
                     break;
                 }
             }
-
             // If a bug is not present, display empty cell
             if (!found) {
                 cout << "| " << "    ";
@@ -315,11 +226,11 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
             }
         }
 
-        displayCells();
+        displayCells( );
         sf::sleep(sf::seconds(0.1));
     }
     // Display the final positions of the bugs
-    displayCells();
+    displayCells( );
 }
 
 
