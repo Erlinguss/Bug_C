@@ -128,9 +128,9 @@ void Bug::BugData() {
                      << "\t\t\t" << this->getHopLength()
                      << "\t\t\t" << BugAlive  << endl;
 
-            } else if (this->type == "SuperBug") {
+            } else if (this->type == "Scorpion") {
                 cout << this->getId() << "\t" << type
-                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
+                     << "\t(" << this->getPosition().first << "," << this->getPosition().second
                      << ")\t\t"
                      << BugDirection
                      << "\t\t\t" << this->getSize()

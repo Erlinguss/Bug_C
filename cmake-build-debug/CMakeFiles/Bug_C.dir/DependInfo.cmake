@@ -12,7 +12,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/User/CLionProjects/bug_c/Bugboard.cpp" "CMakeFiles/Bug_C.dir/Bugboard.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/Bugboard.cpp.obj.d"
   "C:/Users/User/CLionProjects/bug_c/Crawler.cpp" "CMakeFiles/Bug_C.dir/Crawler.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/Crawler.cpp.obj.d"
   "C:/Users/User/CLionProjects/bug_c/Hopper.cpp" "CMakeFiles/Bug_C.dir/Hopper.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/Hopper.cpp.obj.d"
-  "C:/Users/User/CLionProjects/bug_c/SuperBug.cpp" "CMakeFiles/Bug_C.dir/SuperBug.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/SuperBug.cpp.obj.d"
+  "C:/Users/User/CLionProjects/bug_c/Scorpion.cpp" "CMakeFiles/Bug_C.dir/Scorpion.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/Scorpion.cpp.obj.d"
   "C:/Users/User/CLionProjects/bug_c/main.cpp" "CMakeFiles/Bug_C.dir/main.cpp.obj" "gcc" "CMakeFiles/Bug_C.dir/main.cpp.obj.d"
   )
 

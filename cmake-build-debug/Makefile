@@ -224,29 +224,29 @@ Hopper.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/Hopper.cpp.s
 .PHONY : Hopper.cpp.s
 
-SuperBug.obj: SuperBug.cpp.obj
-.PHONY : SuperBug.obj
+Scorpion.obj: Scorpion.cpp.obj
+.PHONY : Scorpion.obj
 
 # target to build an object file
-SuperBug.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/SuperBug.cpp.obj
-.PHONY : SuperBug.cpp.obj
+Scorpion.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/Scorpion.cpp.obj
+.PHONY : Scorpion.cpp.obj
 
-SuperBug.i: SuperBug.cpp.i
-.PHONY : SuperBug.i
+Scorpion.i: Scorpion.cpp.i
+.PHONY : Scorpion.i
 
 # target to preprocess a source file
-SuperBug.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/SuperBug.cpp.i
-.PHONY : SuperBug.cpp.i
+Scorpion.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/Scorpion.cpp.i
+.PHONY : Scorpion.cpp.i
 
-SuperBug.s: SuperBug.cpp.s
-.PHONY : SuperBug.s
+Scorpion.s: Scorpion.cpp.s
+.PHONY : Scorpion.s
 
 # target to generate assembly for a file
-SuperBug.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/SuperBug.cpp.s
-.PHONY : SuperBug.cpp.s
+Scorpion.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bug_C.dir\build.make CMakeFiles/Bug_C.dir/Scorpion.cpp.s
+.PHONY : Scorpion.cpp.s
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
@@ -293,9 +293,9 @@ help:
 	@echo ... Hopper.obj
 	@echo ... Hopper.i
 	@echo ... Hopper.s
-	@echo ... SuperBug.obj
-	@echo ... SuperBug.i
-	@echo ... SuperBug.s
+	@echo ... Scorpion.obj
+	@echo ... Scorpion.i
+	@echo ... Scorpion.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

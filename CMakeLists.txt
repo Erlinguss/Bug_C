@@ -3,7 +3,7 @@ project(Bug_C)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Bug_C main.cpp Bug.cpp Bug.h Crawler.cpp Crawler.h Hopper.cpp Hopper.h Bugboard.cpp Bugboard.h)
+add_executable(Bug_C main.cpp Bug.cpp Bug.h Crawler.cpp Crawler.h Hopper.cpp Hopper.h Bugboard.cpp Bugboard.h Scorpion.cpp Scorpion.h)
 
 
 set(SFML_STATIC_LIBRARIES TRUE)

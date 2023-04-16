@@ -12,6 +12,7 @@
 #include "Bug.h"
 #include "Crawler.h"
 #include "Hopper.h"
+#include "Scorpion.h"
 using namespace std;
 
 const int BOARD_WIDTH = 10; // Width of the board in cells
