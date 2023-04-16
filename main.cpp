@@ -33,7 +33,7 @@ int main() {
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Num1:
-                        board.initializeBoard(bug_vector, board);
+                        board.initializeBoard();
                         cout << "File loaded" << endl;
                         break;
                     case sf::Keyboard::Num2:
@@ -46,13 +46,13 @@ int main() {
                         board.tapBoard();
                         break;
                     case sf::Keyboard::Num5:
-                        board.runSimulation(window);
-                        break;
-                    case sf::Keyboard::Num6:
                         board.displayLifeHistory();
                         break;
-                    case sf::Keyboard::Num7:
+                    case sf::Keyboard::Num6:
                         board.displayCells();
+                        break;
+                    case sf::Keyboard::Num7:
+                        board.runSimulation(window);
                         break;
                     case sf::Keyboard::Num8:
                         // Write Life History of all Bugs to file

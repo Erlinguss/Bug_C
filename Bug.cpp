@@ -84,26 +84,40 @@ void Bug::BugData() {
         default:
             BugDirection = "UNKNOWN";
             break;
-
-            if (this->type == "Crawler") {
-                cout << "Crawler " << this->getId() << " at (" << this->getPosition().first << ","
-                     << this->getPosition().second
-                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-                     << BugAlive << endl;
-            } else if (this->type == "Hopper") {
-                cout << "Hopper " << this->getId() << " at (" << this->getPosition().first << ","
-                     << this->getPosition().second
-                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-                     << BugAlive << " hop length "
-                     << this->getHopLength() << endl;
-            } else if (this->type == "SuperBug") {
-                cout << "SuperBug " << this->getId() << " at (" << this->getPosition().first << ","
-                     << this->getPosition().second
-                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-                     << BugAlive << endl;
-            }
     }
+            if (this->type == "Crawler") {
+                cout << this->getId() << "\t" << type
+                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
+                     << ")\t\t"
+                     << BugDirection
+                     << "\t\t\t" << this->getSize()
+                     << "\t\t\t-"
+                     << "\t\t\t" << BugAlive  << endl;
+
+            } else if (this->type == "Hopper") {
+                cout << this->getId() << "\t" << type
+                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
+                     << ")\t\t"
+                     << BugDirection
+                     << "\t\t\t" << this->getSize()
+                     << "\t\t\t" << this->getHopLength()
+                     << "\t\t\t" << BugAlive  << endl;
+
+            } else if (this->type == "SuperBug") {
+                cout << this->getId() << "\t" << type
+                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
+                     << ")\t\t"
+                     << BugDirection
+                     << "\t\t\t" << this->getSize()
+                     << "\t\t\t-"
+                     << "\t\t\t" << BugAlive  << endl;
+
+            }
+
+
+
 }
+
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {

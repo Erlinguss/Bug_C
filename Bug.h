@@ -13,7 +13,7 @@
 using namespace std;
 
 
-enum class Direction { NORTH , EAST , SOUTH, WEST };
+enum class Direction { NORTH =1 , EAST =2, SOUTH =3, WEST =4 };
 
 class Bug {
 public:
@@ -36,8 +36,8 @@ public:
     void addToPath(const std::pair<int, int>& position);
 
 
-//    virtual void move() = 0;
-    virtual void move();
+    virtual void move() = 0;
+    //virtual void move();
     bool isWayBlocked() const;
     const sf::Color &getColor() const;
     string getType() const;
@@ -49,8 +49,9 @@ public:
 
     // Initialize m_bugs as an empty vector
     vector<Bug*> bugs;
+    virtual void BugData();
 
-    void BugData();
+
 
 protected:
 

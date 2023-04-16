@@ -35,8 +35,6 @@ public:
     void addBug(Bug* bug);
     vector<Bug*> getBoard();
 
-    void initializeBoard(vector<Bug *> &bug_vector, BugBoard &board);
-
     void displayBugs() const;
 
 protected:
@@ -44,10 +42,8 @@ protected:
     vector<Bug*> bugs;
     vector<Bug*> bug_vector;
 
-   // void initializeBoard();
-
-
-
+    void header() const;
+    void footer() const;
 };
 
 #endif
