@@ -3,21 +3,15 @@
 //
 
 #include "Bugboard.h"
+#include <iomanip>
 
 using namespace std;
 
 const int CELL_SIZE = 50; // Size of each cell in pixels
 
 BugBoard::BugBoard() {
-  //  initializeBoard();
-}
 
-//vector<Bug*> BugBoard::getBoard() {
-//    return bugs;
-//}
-//void BugBoard::addBug(Bug* bug) {
-//    bugs.push_back(bug);
-//}
+}
 
 void BugBoard::initializeBoard() {
 
@@ -78,7 +72,7 @@ void BugBoard::initializeBoard() {
             size = stoi(temp);
             getline(ss, temp, ';');
             hopLength = stoi(temp);
-            Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, hopLength, alive, list<pair<int, int>>());
+            Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, alive, list<pair<int, int>>(),  hopLength);
             hopper->setType("Hopper");
             bugs.push_back(hopper);
         }
@@ -107,6 +101,7 @@ void BugBoard::displayBugs() const {
     }
    footer();
 }
+
 
 void BugBoard::findBug() const {
     int id;
@@ -180,8 +175,11 @@ void BugBoard::displayLifeHistory() const {
 
 
 void BugBoard::displayCells() const {
-
     cout << "Current Cells:" << endl;
+
+    // Set the width of each cell to a fixed size
+    int cellWidth = 5;
+    int cellWidth1 = 3;
 
     // Iterate over the board
     for (int y = 0; y < BOARD_HEIGHT; y++) {
@@ -189,21 +187,71 @@ void BugBoard::displayCells() const {
             // Check if there is a bug at this position
             bool found = false;
             for (Bug* bug : bugs) {
-                if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
+                  if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
+               // if (bug->getPosition() == make_pair(x, y)) {
                     found = true;
                     // Display bug's type and id
-                    cout << "| " << bug->getType() << " " << bug->getId() << "  ";
+                    cout << "|" <<"(" << x << "," << y << "):" << bug->getType() << " " << bug->getId() << setw(cellWidth1)<< left;
                     break;
                 }
             }
-            // If a bug is not present, display empty cell
+            // If a bug is not present, display position and "empty"
             if (!found) {
-                cout << "| " << "    ";
+                cout << "|"  << "(" << x << "," << y << "): empty   "<< setw(cellWidth); // Display position and "empty"
             }
         }
         cout << "|" << endl;
     }
 }
+//
+//void BugBoard::displayCells() const {
+//
+//    for (int x = 0; x <= BOARD_WIDTH; ++x) {
+//        for (int y = 0; y <= BOARD_HEIGHT; ++y) {
+//            string cell_status = "";
+//            for (const Bug* bug : bugs) {
+//                if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
+//                    if (!cell_status.empty()) {
+//                        cell_status += ", ";
+//                    }
+//                    cell_status += bug->getType() + " " + to_string(bug->getId());
+//                }
+//            }
+//            if (cell_status.empty()) {
+//                cell_status = "empty";
+//            }
+//            cout << "(" << x << "," << y << "): " << cell_status << endl;
+//        }
+//    }
+//}
+
+//void BugBoard::runSimulation(sf::RenderWindow& window) {
+//    int numSteps;
+//    cout << "Enter the number of simulation steps: ";
+//    cin >> numSteps;
+//
+//    // Run the simulation for the specified number of steps
+//    for (int i = 0; i < numSteps; i++) {
+//        for (auto bug : bugs) {
+//            if (bug->isAlive()) {
+//                // Move the bug
+//                bug->move();
+//
+//             Check for collision with other bugs
+//                for (const auto other : bugs) {
+//                    if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
+//
+//                        bug->collide(other);
+//                    }
+//                }
+//            }
+//        }
+//
+//        displayCells( );
+//        sf::sleep(sf::seconds(0.1));
+//    }
+//
+//}
 
 void BugBoard::runSimulation(sf::RenderWindow& window) {
     int numSteps;
@@ -211,28 +259,41 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
     cin >> numSteps;
 
     // Run the simulation for the specified number of steps
-    for (int i = 0; i < numSteps; i++) {
+    bool gameOver = false;
+    for (int i = 0; i < numSteps && !gameOver; i++) {
         for (auto bug : bugs) {
             if (bug->isAlive()) {
                 // Move the bug
                 bug->move();
 
-//             Check for collision with other bugs
-                for (auto other : bugs) {
+                // Check for collision with other bugs
+                for (const auto other : bugs) {
                     if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
                         bug->collide(other);
+
+                        // Check if game over condition is met (e.g. one of the bugs wins)
+                        if (!other->isAlive()) {
+                            gameOver = true;
+                            bug->setAlive(true);
+                            break; // Exit the loop if game over condition is met
+                        }
                     }
                 }
             }
         }
 
-        displayCells( );
+        displayCells();
         sf::sleep(sf::seconds(0.1));
-    }
-    // Display the final positions of the bugs
-    displayCells( );
-}
 
+        // Check if game over condition is met, and exit the loop if it is
+        if (gameOver) {
+            break;
+        }
+    }
+
+    cout << "Game Over!" << endl;
+    // resetGame();
+}
 
 void BugBoard::writeLifeHistoryToFile() {
     ofstream file;

@@ -9,8 +9,7 @@ const int BOARD_WIDTH = 10; // Width of the board in cells
 const int BOARD_HEIGHT = 10; // Height of the board in cells
 
 Crawler::Crawler(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path )
-        : Bug(id, position.first, position.second, getRandomDirection(), size,  alive, path)
-
+        : Bug(id, position.first, position.second, getRandomDirection(), size, alive, path)
 {
     this->m_color = sf::Color::Green;
 }
@@ -34,28 +33,28 @@ Direction Crawler::getRandomDirection() const {
 }
 
  pair<int, int> Crawler::getNextPosition() const {
-    int x = getPosition().first;
-    int y = getPosition().second;
+    int crawlerX = getPosition().first;
+    int crawlerY = getPosition().second;
     switch (direction) {
         case Direction::NORTH:
-            y--;
+            crawlerY--;
             break;
         case Direction::EAST:
-            x++;
+            crawlerX++;
             break;
         case Direction::SOUTH:
-            y++;
+            crawlerY++;
             break;
         case Direction::WEST:
-            x--;
+            crawlerX--;
             break;
     }
-    return make_pair(x, y);
+    return make_pair(crawlerX, crawlerY);
 }
 
 bool Crawler::isValidPosition(const pair<int, int>& position) const {
-    int x = position.first;
-    int y = position.second;
-    return x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT && !isOccupied(position);
+    int PositionX = position.first;
+    int PositionY = position.second;
+    return PositionX >= 0 && PositionX< BOARD_WIDTH && PositionY >= 0 && PositionY< BOARD_HEIGHT && !isOccupied(position);
 }
 

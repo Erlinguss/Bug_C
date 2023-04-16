@@ -19,6 +19,8 @@ class Bug {
 public:
     Bug(int id, int x, int y, Direction direction, int size,  bool alive, const list<pair<int, int>> path);
 
+
+
     virtual ~Bug() {}
 
     int getId() const;
@@ -36,8 +38,9 @@ public:
     void addToPath(const std::pair<int, int>& position);
 
 
-    virtual void move() = 0;
-    //virtual void move();
+    //virtual void move() = 0;
+    virtual void move();
+    virtual int getHopLength();
     bool isWayBlocked() const;
     const sf::Color &getColor() const;
     string getType() const;
@@ -47,7 +50,8 @@ public:
     bool isOccupied(const std::pair<int, int>& position) const;
     Bug * eat(Bug& otherBug);
 
-    // Initialize m_bugs as an empty vector
+
+    // Initialize bugs as an empty vector
     vector<Bug*> bugs;
     virtual void BugData();
 
@@ -61,12 +65,12 @@ protected:
     int size;
     bool alive;
     list<pair<int, int>> path;
-    int hopLength;
     string status;
     string type;
     bool isWayBlocked(int board_size) const;
     bool m_tapped;
     sf::Color m_color;
+    int hopLength;
 
     void fight();
 

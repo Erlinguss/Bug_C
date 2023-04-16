@@ -22,15 +22,14 @@ class BugBoard {
 public:
     BugBoard();
 
-
     void findBug() const;
     void tapBoard();
     void displayLifeHistory() const;
     void displayCells() const;
     void runSimulation(sf::RenderWindow& window);
     void writeLifeHistoryToFile();
-    void eat();
-    void BugData();
+//    void eat();
+//    void BugData();
     void initializeBoard();
     void addBug(Bug* bug);
     vector<Bug*> getBoard();

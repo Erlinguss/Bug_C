@@ -5,25 +5,28 @@
 const int BOARD_WIDTH = 10; // Width of the board in cells
 const int BOARD_HEIGHT = 10; // Height of the board in cells
 
-Hopper::Hopper(int id, pair<int, int> position, Direction direction, int size, int hopLength, bool alive,  list<pair<int, int>> path)
-: Bug(id, position.first, position.second, direction, size, alive, path) {
+Hopper::Hopper(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path,  int hopLength)
+: Bug(id, position.first, position.second, direction, size, alive, path) , hopLength(hopLength) {
     this->m_color = sf::Color::Red;
 }
-
 
 int Hopper::getHopLength()  const  {
     return this->hopLength;
 }
 
-void Hopper::move() {
-    pair<int, int> dx_dy = getDirection();
-    int dx = dx_dy.first;
-    int dy = dx_dy.second;
+void Hopper::setHopLength(int hopLength) {
+    this->hopLength = hopLength;
+}
 
-    if (canHop(dx_dy)) {
-        int newX = position.first + dx * hopLength;
-        int newY = position.second + dy * hopLength;
-        setPosition(std::make_pair(newX, newY));
+void Hopper::move() {
+    pair<int, int> Direction_X_Y = getDirection();
+    int directionX = Direction_X_Y.first;
+    int directionY = Direction_X_Y.second;
+
+    if (canHop(Direction_X_Y)) {
+        int newDirectionX = position.first + directionX * hopLength;
+        int newDirectionY = position.second + directionY * hopLength;
+        setPosition(make_pair(newDirectionX, newDirectionY));
         addToPath(getPosition());
     }
     else {
@@ -40,36 +43,36 @@ void Hopper::setRandomDirection() {
 }
 
 const pair<int, int> Hopper::getDirection() const {
-    int dx = 0, dy = 0;
+    int hopperX = 0, hopperY = 0;
     switch (direction) {
         case Direction::NORTH:
-            dy = -1;
+            hopperY = -1;
             break;
         case Direction::EAST:
-            dx = 1;
+            hopperX = 1;
             break;
         case Direction::SOUTH:
-            dy = 1;
+            hopperY = 1;
             break;
         case Direction::WEST:
-            dx = -1;
+            hopperX = -1;
             break;
     }
-    return make_pair(dx, dy);
+    return make_pair( hopperX, hopperY);
 }
 
 bool Hopper::canHop(const std::pair<int, int>& direction) const {
-    int dx = direction.first;
-    int dy = direction.second;
+    int hopperX = direction.first;
+    int hopperY = direction.second;
 
     for (int i = 1; i <= hopLength; i++) {
-        int newX = position.first + i*dx;
-        int newY = position.second + i*dy;
-        if (newX < 0 || newX >= BOARD_WIDTH || newY < 0 || newY >= BOARD_HEIGHT) {
+        int newHopperX = position.first + i*hopperX;
+        int newHopperY = position.second + i*hopperY;
+        if (newHopperX  < 0 || newHopperX  >= BOARD_WIDTH || newHopperY < 0 || newHopperY >= BOARD_HEIGHT) {
             return false;
         }
 
-        if (isOccupied(make_pair(newX, newY))) {
+        if (isOccupied(make_pair(newHopperX , newHopperY))) {
             return false;
         }
     }

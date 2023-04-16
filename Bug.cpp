@@ -10,19 +10,19 @@ using namespace std;
 
 
 Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive,  list<pair<int, int>> path)
-        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) , path(path) {
+        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) , path(path)  {
     this->path = path;
-    this->alive = alive;
+//    this->alive = alive;
+
 }
 
 int Bug::getId() const {
     return this-> id;
 }
 
-int Bug::getHopLength() const{
-    return this-> hopLength;
+int Bug::getHopLength() {
+    return this->hopLength;
 }
-
 
 pair<int, int> Bug::getPosition() const {
     return position;
@@ -48,6 +48,7 @@ void Bug::setAlive(bool alive) {
     this->alive = alive;
 }
 
+
 const list<std::pair<int, int>>& Bug::getPath() const {
     return this-> path;
 }
@@ -60,7 +61,31 @@ void Bug:: setType(string type){
     this->type= type;
 }
 
+void Bug::addToPath(const std::pair<int, int>& point) {
+    path.push_back(point);
+}
+
+void Bug::setPosition(const std::pair<int, int>& new_position) {
+    position = new_position;
+}
+
+bool Bug::isOccupied(const std::pair<int, int>& position) const {
+    return (getPosition() == position);
+}
+
+void Bug::collide(Bug* pBug) {
+    if (pBug != nullptr) {
+        if (pBug->isAlive() && isAlive()) {
+            setAlive(false);
+            pBug->setAlive(false);
+            m_color = sf::Color::Yellow;
+            pBug->m_color = sf::Color::Yellow;
+        }
+    }
+}
+
 void Bug::BugData() {
+
     enum direction {
         NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4
     };
@@ -111,13 +136,8 @@ void Bug::BugData() {
                      << "\t\t\t" << this->getSize()
                      << "\t\t\t-"
                      << "\t\t\t" << BugAlive  << endl;
-
             }
-
-
-
 }
-
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -153,7 +173,6 @@ void Bug::move() {
             throw std::runtime_error("Invalid direction");
     }
 
-
 }
 
 const sf::Color& Bug::getColor() const {
@@ -184,8 +203,7 @@ void Bug::tap() {
 
 
 void Bug::fight() {
-
-    bool win =" " ;/* randomly determine if this bug wins or loses */
+    bool win = false; // randomly determine if this bug wins or loses
 
     int m_health;
     int m_attackPower;
@@ -198,45 +216,25 @@ void Bug::fight() {
         // Update internal state for losing bug
         m_health -= 5;  // Decrease health by 5
         m_attackPower -= 2;  // Decrease attack power by 2
-        cout << "Bug " << getType() << " loses the fight." << endl;
+        cout << "Bug " << getType() << " loses the fight!" << endl;
     }
 }
 
-Bug* Bug::eat(Bug& otherBug) {
-    if (this->getSize() != otherBug.getSize()) {
-        Bug* biggerBug = (this->getSize() > otherBug.getSize()) ? this : &otherBug;
-        Bug* smallerBug = (this->getSize() < otherBug.getSize()) ? this : &otherBug;
-        smallerBug->setAlive(false);
-        biggerBug->setSize(biggerBug->getSize() + smallerBug->getSize());
-        cout << "Bug " << biggerBug->getId() << " ate bug " << smallerBug->getId() << endl;
-        return biggerBug;
+Bug * Bug::eat(Bug& otherBug) {
+    int m_health;
+    int m_attackPower;
+    if (otherBug.isAlive()) {
+        // Update internal state for eating bug
+        m_health += 5;  // Increase health by 5
+        m_attackPower += 2;  // Increase attack power by 2
+        otherBug.setAlive(false);  // Set otherBug as dead
+        cout << "Bug " << getType() << " eats bug " << otherBug.getType() << "!" << endl;
     } else {
-        cout << "Bug " << this->getId() << " and bug " << otherBug.getId() << " are with the same size and cannot eat each other" << endl;
-        return nullptr;
+        cout << "Bug " << getType() << " cannot eat bug " << otherBug.getType() << " as it is already dead!" << endl;
     }
 }
 
 
-void Bug::collide(Bug* pBug) {
-    if (pBug != nullptr) {
-        if (pBug->isAlive() && isAlive()) {
-            setAlive(false);
-            pBug->setAlive(false);
-            m_color = sf::Color::Yellow;
-            pBug->m_color = sf::Color::Yellow;
-        }
-    }
-}
 
-void Bug::addToPath(const std::pair<int, int>& point) {
-    path.push_back(point);
-}
 
-void Bug::setPosition(const std::pair<int, int>& new_position) {
-    position = new_position;
-}
-
-bool Bug::isOccupied(const std::pair<int, int>& position) const {
-    return (getPosition() == position);
-}
 

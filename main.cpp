@@ -1,8 +1,6 @@
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include <sstream>
 #include "Bug.h"
 #include "Bugboard.h"
 using namespace std;
