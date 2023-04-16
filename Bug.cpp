@@ -60,47 +60,50 @@ void Bug:: setType(string type){
     this->type= type;
 }
 
-//void Bug::BugData() {
-//
-//    string BugAlive = (this->alive ? "Alive" : "Dead");
-//
-//    string BugDirection;
-//    switch (this->direction) {
-//        case Direction::NORTH:
-//            BugDirection = "North";
-//            break;
-//        case Direction::EAST:
-//            BugDirection = "East";
-//            break;
-//        case Direction::SOUTH:
-//            BugDirection = "South";
-//            break;
-//        case Direction::WEST:
-//            BugDirection = "West";
-//            break;
-//        default:
-//            BugDirection = "UNKNOWN";
-//            break;
-//
-//            if (this->type == "Crawler") {
-//                cout << "Crawler " << this->getId() << " at (" << this->getPosition().first << ","
-//                     << this->getPosition().second
-//                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-//                     << BugAlive << endl;
-//            } else if (this->type == "Hopper") {
-//                cout << "Hopper " << this->getId() << " at (" << this->getPosition().first << ","
-//                     << this->getPosition().second
-//                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-//                     << BugAlive << " hop length "
-//                     << this->getHopLength() << endl;
-//            } else if (this->type == "SuperBug") {
-//                cout << "SuperBug " << this->getId() << " at (" << this->getPosition().first << ","
-//                     << this->getPosition().second
-//                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
-//                     << BugAlive << endl;
-//            }
-//    }
-//}
+void Bug::BugData() {
+    enum direction {
+        NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4
+    };
+
+    string BugAlive = (this->alive ? "Alive" : "Dead");
+
+    string BugDirection;
+    switch (this->direction) {
+        case Direction::NORTH:
+            BugDirection = "North";
+            break;
+        case Direction::EAST:
+            BugDirection = "East";
+            break;
+        case Direction::SOUTH:
+            BugDirection = "South";
+            break;
+        case Direction::WEST:
+            BugDirection = "West";
+            break;
+        default:
+            BugDirection = "UNKNOWN";
+            break;
+
+            if (this->type == "Crawler") {
+                cout << "Crawler " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << endl;
+            } else if (this->type == "Hopper") {
+                cout << "Hopper " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << " hop length "
+                     << this->getHopLength() << endl;
+            } else if (this->type == "SuperBug") {
+                cout << "SuperBug " << this->getId() << " at (" << this->getPosition().first << ","
+                     << this->getPosition().second
+                     << ") " << BugDirection << " size " << this->getSize() << " " << this->getHopLength() << " "
+                     << BugAlive << endl;
+            }
+    }
+}
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -149,12 +152,12 @@ void Bug::tap() {
         m_tapped = true;
 
         // Call move() on all bugs
-        for (auto& bug : m_bugs) {
+        for (auto& bug : bugs) {
             bug->move();
         }
 
         // Implement the fight/eat behavior
-        for (auto& bug : m_bugs) {
+        for (auto& bug : bugs) {
             if (bug->type == "Crawler") {
                 bug->fight();  // Call fight() for Crawler bugs
             } else if (bug->type == "Hopper") {

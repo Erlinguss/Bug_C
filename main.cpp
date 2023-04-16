@@ -33,7 +33,7 @@ int main() {
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Num1:
-                        board.initializeBoard();
+                        board.initializeBoard(bug_vector, board);
                         cout << "File loaded" << endl;
                         break;
                     case sf::Keyboard::Num2:

@@ -48,7 +48,9 @@ public:
     Bug * eat(Bug& otherBug);
 
     // Initialize m_bugs as an empty vector
-    vector<Bug*> m_bugs;
+    vector<Bug*> bugs;
+
+    void BugData();
 
 protected:
 
@@ -64,7 +66,7 @@ protected:
     bool isWayBlocked(int board_size) const;
     bool m_tapped;
     sf::Color m_color;
-    void BugData();
+
     void fight();
 
 };

@@ -21,7 +21,8 @@ class BugBoard {
 
 public:
     BugBoard();
-    void displayBugs() const;
+
+
     void findBug() const;
     void tapBoard();
     void displayLifeHistory() const;
@@ -31,16 +32,22 @@ public:
     void eat();
     void BugData();
     void initializeBoard();
+    void addBug(Bug* bug);
+    vector<Bug*> getBoard();
 
+    void initializeBoard(vector<Bug *> &bug_vector, BugBoard &board);
 
-private:
+    void displayBugs() const;
+
+protected:
 
     vector<Bug*> bugs;
+    vector<Bug*> bug_vector;
 
    // void initializeBoard();
 
 
-    void GeneralData() const;
+
 };
 
 #endif

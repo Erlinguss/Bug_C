@@ -10,7 +10,15 @@ BugBoard::BugBoard() {
   //  initializeBoard();
 }
 
-void BugBoard::initializeBoard() {
+vector<Bug*> BugBoard::getBoard() {
+    return bugs;
+}
+
+void BugBoard::addBug(Bug* bug) {
+    bugs[bug->getPosition().first][bug->getPosition().second] = *bug;
+}
+
+void BugBoard::initializeBoard(vector<Bug*>& bug_vector, BugBoard& board) {
 
     // Clear the bugs vector
     for (Bug* bug : bugs) {
@@ -20,6 +28,10 @@ void BugBoard::initializeBoard() {
 
     // Load the bugs from file
     ifstream inFile("bugs.txt");
+    if (!inFile.is_open()) {
+        cerr << "Unable to open file bugs.txt" << endl;
+        return; // Return early if file cannot be opened
+    }
     string line;
     while (getline(inFile, line)) {
         istringstream iss(line);
@@ -27,33 +39,85 @@ void BugBoard::initializeBoard() {
         int id, x, y, size, hopLength;
         bool alive;
         Direction direction;
+        string temp;
 
         iss >> bugType >> id >> x >> y  >> size >> hopLength >> alive;
+
+        getline(iss, temp, ';');
+        if (!temp.empty()) {
+            try {
+                alive = stoi(temp); // Extract alive value
+            } catch (const std::invalid_argument& e) {
+                cerr << "Failed to convert alive value: " << temp << endl;
+                continue; // Skip current line and move to next line
+            }
+        } else {
+            // Set a default value for alive (e.g., true or false)
+            alive = false; // or true, depending on your desired default value
+        }
+
         Bug* bug = nullptr;
 
-        if (bugType == "Crawler") {
-            bug = new Crawler(id, make_pair(x, y), direction, size, true, list<pair<int, int>>());
+        if (bugType == "C") {
+            getline(iss, temp, ';');
+            id = stoi(temp);
+            getline(iss, temp, ';');
+            x = stoi(temp);
+            getline(iss, temp, ';');
+            y = stoi(temp);
+            getline(iss, temp, ';');
+            direction = static_cast<Direction>(stoi(temp));
+            getline(iss, temp, ';');
+            size = stoi(temp);
+
+            Crawler* crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            crawler->setType("Crawler");
+            bug_vector.push_back(crawler);
+            board.addBug(crawler);
         }
-        else if (bugType == "Hopper") {
-            bug = new Hopper(id, make_pair(x, y), direction,  size, hopLength, true, list<pair<int, int>>());
+        else if (bugType == "H") {
+            getline(iss, temp, ';');
+            id = stoi(temp);
+            getline(iss, temp, ';');
+            x = stoi(temp);
+            getline(iss, temp, ';');
+            y = stoi(temp);
+            getline(iss, temp, ';');
+            direction = static_cast<Direction>(stoi(temp));
+            getline(iss, temp, ';');
+            size = stoi(temp);
+            getline(iss, temp, ';');
+            hopLength = stoi(temp);
+
+            Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, hopLength, alive, list<pair<int, int>>());
+            hopper->setType("Hopper");
+            bug_vector.push_back(hopper);
+            board.addBug(hopper);
+
         }
-        if (bug != nullptr) {
-            bugs.push_back(bug);
-        }
-        else{
-            cerr << "Unable to open file bugs.txt" << endl;
-        }
+
+//        if (bug != nullptr) {
+//            bugs.push_back(bug);
+//        }
     }
     inFile.close();
 }
-
-
+//
+//void BugBoard::displayBugs(vector<Bug*>& bug_vector) {
+//
+//    for(int i = 0; i < bug_vector.size(); i++) {
+//        if(bug_vector[i]->getType() == "Crawler") {
+//            bug_vector[i]->BugData();
+//        } else if(bug_vector[i]->getType() == "Hopper") {
+//            bug_vector[i]->BugData();
+//        }
+//    }
+//}
 
 void BugBoard::displayBugs() const {
     cout << "--------------------------------------------------------------------------" << endl;
     cout << "ID\tType\t\tPosition\tDirection\t\tSize\t\tHop Length\tStatus" << endl;
     cout << "--------------------------------------------------------------------------" << endl;
-
 
     for (const Bug* bug : bugs) {
 
