@@ -13,11 +13,12 @@ class Scorpion : public Bug {
 public:
     Scorpion(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path);
     void move() override;
-    void setRandomDirection();
-    bool canMove(const pair<int, int> &direction) const;
 
 private:
 
+    Direction getRandomDirection() const;
+    pair<int, int> getNextPosition() const;
+    bool isValidPosition(const pair<int, int> &position) const;
 };
 
 #endif //BUG_C_SCORPION_H

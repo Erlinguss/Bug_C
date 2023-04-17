@@ -1,5 +1,6 @@
 
-
+#include <iomanip>
+#include <sstream>
 #include "Hopper.h"
 
 const int BOARD_WIDTH = 10; // Width of the board in cells
@@ -77,4 +78,67 @@ bool Hopper::canHop(const std::pair<int, int>& direction) const {
         }
     }
     return true;
+}
+
+void Hopper::BugData() {
+
+    enum direction {
+        NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4
+    };
+
+    string BugAlive = (this->alive ? "Alive" : "Dead");
+
+    string BugDirection;
+    switch (this->direction) {
+        case Direction::NORTH:
+            BugDirection = "North";
+            break;
+        case Direction::EAST:
+            BugDirection = "East";
+            break;
+        case Direction::SOUTH:
+            BugDirection = "South";
+            break;
+        case Direction::WEST:
+            BugDirection = "West";
+            break;
+        default:
+            BugDirection = "UNKNOWN";
+            break;
+    }
+
+
+// Set the column widths for each column
+    int idColumnWidth = 4;
+    int typeColumnWidth = 12;
+    int positionColumnWidth = 12;
+    int directionColumnWidth = 16;
+    int sizeColumnWidth = 12;
+    int ColumnWidth = 13;
+    int statusColumnWidth = 10;
+
+// Common parts of the output string
+    std::ostringstream oss;
+    oss << setw(idColumnWidth) << left << std::to_string(this->getId())
+        << setw(typeColumnWidth) << left << type
+        << setw(positionColumnWidth) << left << "(" + std::to_string(this->getPosition().first) + "," +
+                                                std::to_string(this->getPosition().second) + ")"
+        << std::setw(directionColumnWidth) << std::left << BugDirection
+        << std::setw(sizeColumnWidth) << std::left << std::to_string(this->getSize());
+
+// Append varying parts based on bug type
+    if (this->type == "Crawler") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "Hopper") {
+        oss << setw(ColumnWidth) << left << std::to_string(this->getHopLength())
+            << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "Scorpion") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    }
+
+// Output the final string with aligned columns
+    std::cout << oss.str() << std::endl;
+
 }

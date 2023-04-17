@@ -36,6 +36,7 @@ public:
     vector<Bug*> getBoard();
 
     void displayBugs() const;
+    void displayCells(int numSteps) const;
 
 
 protected:
@@ -45,6 +46,7 @@ protected:
 
     void header() const;
     void footer() const;
+
 
 };
 

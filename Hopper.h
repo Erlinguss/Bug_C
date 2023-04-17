@@ -18,7 +18,7 @@ public:
     void setRandomDirection();
     bool canHop(const std::pair<int, int>& direction) const;
     void setHopLength(int hopLength);
-
+    virtual void BugData();
 private:
 
 };

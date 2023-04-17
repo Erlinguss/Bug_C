@@ -6,13 +6,15 @@
 #include<iostream>
 #include <string>
 #include "Bug.h"
+#include <iomanip>
+#include <sstream>
+
 using namespace std;
 
 
 Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive,  list<pair<int, int>> path)
         : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) , path(path)  {
     this->path = path;
-//    this->alive = alive;
 
 }
 
@@ -76,10 +78,18 @@ bool Bug::isOccupied(const std::pair<int, int>& position) const {
 void Bug::collide(Bug* pBug) {
     if (pBug != nullptr) {
         if (pBug->isAlive() && isAlive()) {
-            setAlive(false);
-            pBug->setAlive(false);
-            m_color = sf::Color::Yellow;
-            pBug->m_color = sf::Color::Yellow;
+            if(size < pBug->getSize())
+            {
+                setAlive(false);
+                m_color = sf::Color::Yellow;
+                size += pBug->getSize();
+            }
+            else
+            {
+                pBug->setAlive(false);
+                pBug->m_color = sf::Color::Yellow;
+                pBug->setSize(pBug->getSize()+size);
+            }
         }
     }
 }
@@ -110,34 +120,42 @@ void Bug::BugData() {
             BugDirection = "UNKNOWN";
             break;
     }
-            if (this->type == "Crawler") {
-                cout << this->getId() << "\t" << type
-                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
-                     << ")\t\t"
-                     << BugDirection
-                     << "\t\t\t" << this->getSize()
-                     << "\t\t\t-"
-                     << "\t\t\t" << BugAlive  << endl;
 
-            } else if (this->type == "Hopper") {
-                cout << this->getId() << "\t" << type
-                     << "\t\t(" << this->getPosition().first << "," << this->getPosition().second
-                     << ")\t\t"
-                     << BugDirection
-                     << "\t\t\t" << this->getSize()
-                     << "\t\t\t" << this->getHopLength()
-                     << "\t\t\t" << BugAlive  << endl;
+// Set the column widths for each column
+    int idColumnWidth = 4;
+    int typeColumnWidth = 12;
+    int positionColumnWidth = 12;
+    int directionColumnWidth = 16;
+    int sizeColumnWidth = 12;
+    int ColumnWidth = 13;
+    int statusColumnWidth = 10;
 
-            } else if (this->type == "Scorpion") {
-                cout << this->getId() << "\t" << type
-                     << "\t(" << this->getPosition().first << "," << this->getPosition().second
-                     << ")\t\t"
-                     << BugDirection
-                     << "\t\t\t" << this->getSize()
-                     << "\t\t\t-"
-                     << "\t\t\t" << BugAlive  << endl;
-            }
+
+// Common parts of the output string
+    std::ostringstream oss;
+    oss << setw(idColumnWidth) << left << std::to_string(this->getId())
+        << setw(typeColumnWidth) << left << type
+        << setw(positionColumnWidth) << left << "(" + std::to_string(this->getPosition().first) + "," +
+                                                          std::to_string(this->getPosition().second) + ")"
+        << std::setw(directionColumnWidth) << std::left << BugDirection
+        << std::setw(sizeColumnWidth) << std::left << std::to_string(this->getSize());
+
+// Append varying parts based on bug type
+    if (this->type == "Crawler") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "Hopper") {
+        oss << setw(ColumnWidth) << left << std::to_string(this->getHopLength())
+            << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "Scorpion") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    }
+
+// Output the final string with aligned columns
+    std::cout << oss.str() << std::endl;
 }
+
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
@@ -207,6 +225,7 @@ void Bug::fight() {
 
     int m_health;
     int m_attackPower;
+
     if (win) {
         // Update internal state for winning bug
         m_health += 10;  // Increase health by 10

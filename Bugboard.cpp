@@ -101,16 +101,15 @@ void BugBoard:: header() const{
     cout << "--------------------------------------------------------------------------" << endl;
     cout << "ID\tType\t\tPosition\tDirection\t\tSize\t\tHop Length\tStatus" << endl;
     cout << "--------------------------------------------------------------------------" << endl;
-
 }
 
 void BugBoard:: footer() const{
       cout << "--------------------------------------------------------------------------" << endl;
       cout << " "<< endl;
-
 }
 
 void BugBoard::displayBugs() const {
+
    header();
     for ( Bug *bug : bugs) {
         bug->BugData();
@@ -180,7 +179,6 @@ void BugBoard::displayLifeHistory() const {
         cout << bug->getId() <<" " << type << " Path(life history) : ";
         const auto& path = bug->getPath();
 
-
         if (path.empty()) {
             cout << "No movements yet" << endl;
         } else {
@@ -197,79 +195,31 @@ void BugBoard::displayCells() const {
     cout << "Current Cells:" << endl;
 
     // Set the width of each cell to a fixed size
-    int cellWidth = 5;
-    int cellWidth1 = 3;
+    int cellWidth = 20;
 
-    // Iterate over the board
+    // Create a 2D array to keep track of the bugs' positions
+    vector<vector<string>> bugContent(BOARD_WIDTH, vector<string>(BOARD_HEIGHT, "empty"));
+
+    // Iterate over the bugs and update the content array
+    for (Bug* bug : bugs) {
+        if (bug->isAlive()) {
+            auto position = bug->getPosition();
+            string content = "(" + to_string(position.first) + "," + to_string(position.second) + "): " + bug->getType() + " " + to_string(bug->getId());
+            bugContent[position.first][position.second] = content;
+        }
+    }
+
+    // Display the bug content with aligned cells
     for (int y = 0; y < BOARD_HEIGHT; y++) {
         for (int x = 0; x < BOARD_WIDTH; x++) {
-            // Check if there is a bug at this position
-            bool found = false;
-            for (Bug* bug : bugs) {
-                  if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
-                    found = true;
-                    // Display bug's type and id
-                    cout << "|" <<"(" << x << "," << y << "):" << bug->getType() << " " << bug->getId() << setw(cellWidth1)<< left;
-                    break;
-                }
-            }
-            // If a bug is not present, display position and "empty"
-            if (!found) {
-                cout << "|"  << "(" << x << "," << y << "): empty   "<< setw(cellWidth); // Display position and "empty"
-            }
+            string content = bugContent[x][y];
+            cout << "|" << setw(cellWidth) << left << content; // Display the bug content with aligned cells
         }
         cout << "|" << endl;
     }
+    cout << " "<< endl;
 }
-//
-//void BugBoard::displayCells() const {
-//
-//    for (int x = 0; x <= BOARD_WIDTH; ++x) {
-//        for (int y = 0; y <= BOARD_HEIGHT; ++y) {
-//            string cell_status = "";
-//            for (const Bug* bug : bugs) {
-//                if (bug->getPosition() == make_pair(x, y) && bug->isAlive()) {
-//                    if (!cell_status.empty()) {
-//                        cell_status += ", ";
-//                    }
-//                    cell_status += bug->getType() + " " + to_string(bug->getId());
-//                }
-//            }
-//            if (cell_status.empty()) {
-//                cell_status = "empty";
-//            }
-//            cout << "(" << x << "," << y << "): " << cell_status << endl;
-//        }
-//    }
-//}
 
-//void BugBoard::runSimulation(sf::RenderWindow& window) {
-//    int numSteps;
-//    cout << "Enter the number of simulation steps: ";
-//    cin >> numSteps;
-//
-//    // Run the simulation for the specified number of steps
-//    for (int i = 0; i < numSteps; i++) {
-//        for (auto bug : bugs) {
-//            if (bug->isAlive()) {
-//                // Move the bug
-//                bug->move();
-//
-//             Check for collision with other bugs
-//                for (const auto other : bugs) {
-//                    if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
-//
-//                        bug->collide(other);
-//                    }
-//                }
-//            }
-//        }
-//
-//        displayCells( );
-//        sf::sleep(sf::seconds(0.1));
-//    }
-//
-//}
 
 void BugBoard::runSimulation(sf::RenderWindow& window) {
     int numSteps;
@@ -305,7 +255,6 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
             }
         }
 
-        displayCells();
         sf::sleep(sf::seconds(0.1));
 
         // Update the number of alive bugs after each simulation step
@@ -315,6 +264,9 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
                 numAliveBugs++;
             }
         }
+        cout << " "<< endl;
+        displayCells();
+       // cout << i << ". Alive Bugs:" << numAliveBugs <<endl;
 
         // Check if only one bug is alive and exit the simulation if true
         if (numAliveBugs == 1) {
@@ -322,7 +274,6 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
             return;
         }
     }
-
     cout << "Game Over!" << endl;
 }
 
@@ -331,7 +282,6 @@ void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
     file.open("bugs_life_history_date_time.out.txt");
 
-
         for (const auto &bug: bugs) {
                 string type = "";
                 if (dynamic_cast<Crawler *>(bug) != nullptr) {
@@ -339,14 +289,24 @@ void BugBoard::writeLifeHistoryToFile() {
                 } else if (dynamic_cast<Hopper *>(bug) != nullptr) {
                     type = "Hopper";
                 }
-            file << "Bug ID: " << bug->getId() << "\n";
-            file << "Bug Type: " << type << "\n";
+                else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
+                    type = "Scorpion";
+                }
+            file << bug->getId() <<" " << type << " Path(life history) : ";
+            const auto& path = bug->getPath();
+            if (path.empty()) {
+                file << "No movements yet" << endl;
+            } else {
+                for (const auto& point : path) {
+                    file<< "(" << point.first << "," << point.second << ") ";
+                }
+                file << endl;
+            }
         }
-
         file.close();
     }
 
-//
+
 //void BugBoard::eat() {
 //    // Check for bugs on the same cell
 //    for (size_t i = 0; i < bugs.size(); ++i) {
