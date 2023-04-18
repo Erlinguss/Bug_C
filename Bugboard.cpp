@@ -51,7 +51,7 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp));
+            direction = static_cast<Direction>(stoi(temp)-1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
@@ -67,7 +67,7 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp));
+            direction = static_cast<Direction>(stoi(temp)-1);
             getline(ss, temp, ';');
             size = stoi(temp);
             getline(ss, temp, ';');
@@ -84,7 +84,7 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp));
+            direction = static_cast<Direction>(stoi(temp)-1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
@@ -138,29 +138,22 @@ void BugBoard::findBug() const {
         cout << "Bug with ID " << id << " not found." << endl;
     }
 }
+vector<Bug*> BugBoard::getBoard()
+{
+    return bugs;
+}
 
 void BugBoard::tapBoard() {
-    int x, y;
-    cout << "Enter the x and y coordinates of the cell you want to tap: ";
-    cin >> x >> y;
-    bool tapped = false;
-    for (Bug* bug : bugs) {
-        if (bug->getPosition() == make_pair(x, y)) {
-            bug->tap();
-            cout << "Bug tapped." << endl;
-            tapped = true;
-            break;
-        }
-    }
-    if (!tapped) {
-        cout << "No bug found at (" << x << "," << y << ")." << endl;
-    }
 
     // Call move() function on all bugs
-    for (Bug* bug : bugs) {
+    for (Bug *bug: bugs) {
         bug->move();
     }
-}
+
+    for (Bug *bug: bugs) {
+       bug->eat(bug->getSize());
+        }
+    }
 
 
 void BugBoard::displayLifeHistory() const {
@@ -221,9 +214,9 @@ void BugBoard::displayCells() const {
 }
 
 
-void BugBoard::runSimulation(sf::RenderWindow& window) {
-    int numSteps;
-    cout << "Enter the number of simulation steps: ";
+void BugBoard::runSimulation() {
+  int numSteps;
+   cout << "Enter the number of simulation steps: ";
     cin >> numSteps;
 
     int numAliveBugs = 0; // Track the number of alive bugs
@@ -266,9 +259,8 @@ void BugBoard::runSimulation(sf::RenderWindow& window) {
         }
         cout << " "<< endl;
         displayCells();
-       // cout << i << ". Alive Bugs:" << numAliveBugs <<endl;
 
-        // Check if only one bug is alive and exit the simulation if true
+       // Check if only one bug is alive and exit the simulation if true
         if (numAliveBugs == 1) {
             cout << "Game Over!" << endl;
             return;
@@ -306,35 +298,3 @@ void BugBoard::writeLifeHistoryToFile() {
         file.close();
     }
 
-
-//void BugBoard::eat() {
-//    // Check for bugs on the same cell
-//    for (size_t i = 0; i < bugs.size(); ++i) {
-//        for (size_t j = i + 1; j < bugs.size(); ++j) {
-//            if (bugs[i]->getPosition() == bugs[j]->getPosition()) {
-//                // Determine which bug eats the other
-//                if (bugs[i]->getSize() > bugs[j]->getSize()) {
-//                    bugs[i]->eat(bugs[j]->getSize());
-//                    bugs[j]->setAlive(false);
-//                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
-//                    bugs[j]->eat(bugs[i]->getSize());
-//                    bugs[i]->setAlive(false);
-//                } else {
-//                    // Randomly determine which bug eats the other
-//                    int winner = rand() % 2;
-//                    if (winner == 0) {
-//                        bugs[i]->eat(bugs[j]->getSize());
-//                        bugs[j]->setAlive(false);
-//                    } else {
-//                        bugs[j]->eat(bugs[i]->getSize());
-//                        bugs[i]->setAlive(false);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    // Remove dead bugs
-//    bugs.erase(remove_if(bugs.begin(), bugs.end(), [](Bug* bug) {
-//        return !bug->isAlive();
-//    }), bugs.end());
-//}

@@ -94,11 +94,9 @@ void Bug::collide(Bug* pBug) {
     }
 }
 
-void Bug::BugData() {
 
-    enum direction {
-        NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4
-    };
+
+void Bug::BugData() {
 
     string BugAlive = (this->alive ? "Alive" : "Dead");
 
@@ -198,62 +196,56 @@ const sf::Color& Bug::getColor() const {
 }
 
 
-void Bug::tap() {
-    if (!m_tapped) {
-        m_tapped = true;
+//void Bug::tap() {
+//    if (!m_tapped) {
+//        m_tapped = true;
+//
+//        // Call move() on all bugs
+//        for (auto& bug : bugs) {
+//            bug->move();
+//        }
+//
+//        // Implement the fight/eat behavior
+//        for (auto& bug : bugs) {
+//          bug->eat(getSize());
+//           }
+//        }
+//    }
 
-        // Call move() on all bugs
-        for (auto& bug : bugs) {
-            bug->move();
-        }
 
-        // Implement the fight/eat behavior
-        for (auto& bug : bugs) {
-            if (bug->type == "Crawler") {
-                bug->fight();  // Call fight() for Crawler bugs
-            } else if (bug->type == "Hopper") {
-                Bug &otherBug = (Bug &) " ";
-                bug->eat( otherBug);   // Call eat() for Hopper bugs
+void Bug::eat(int i) {
+    // Check for bugs on the same cell
+    for (size_t i = 0; i < bugs.size(); ++i) {
+        for (size_t j = i + 1; j < bugs.size(); ++j) {
+            if (bugs[i]->getPosition() == bugs[j]->getPosition()) {
+
+                // Determine which bug eats the other
+                if (bugs[i]->getSize() > bugs[j]->getSize()) {
+                    bugs[i]->eat(bugs[j]->getSize());
+                    bugs[j]->setAlive(false);
+                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
+                    bugs[j]->eat(bugs[i]->getSize());
+                    bugs[i]->setAlive(false);
+                } else {
+
+                    // Randomly determine which bug eats the other
+                    int winner = rand() % 2;
+                    if (winner == 0) {
+                        bugs[i]->eat(bugs[j]->getSize());
+                        bugs[j]->setAlive(false);
+                    } else {
+                        bugs[j]->eat(bugs[i]->getSize());
+                        bugs[i]->setAlive(false);
+                    }
+                }
             }
         }
     }
+    // Remove dead bugs
+    bugs.erase(remove_if(bugs.begin(), bugs.end(), [](Bug* bug) {
+        return !bug->isAlive();
+    }), bugs.end());
 }
-
-
-void Bug::fight() {
-    bool win = false; // randomly determine if this bug wins or loses
-
-    int m_health;
-    int m_attackPower;
-
-    if (win) {
-        // Update internal state for winning bug
-        m_health += 10;  // Increase health by 10
-        m_attackPower += 5;  // Increase attack power by 5
-        cout << "Bug " << getType() << " wins the fight!" << endl;
-    } else {
-        // Update internal state for losing bug
-        m_health -= 5;  // Decrease health by 5
-        m_attackPower -= 2;  // Decrease attack power by 2
-        cout << "Bug " << getType() << " loses the fight!" << endl;
-    }
-}
-
-Bug * Bug::eat(Bug& otherBug) {
-    int m_health;
-    int m_attackPower;
-    if (otherBug.isAlive()) {
-        // Update internal state for eating bug
-        m_health += 5;  // Increase health by 5
-        m_attackPower += 2;  // Increase attack power by 2
-        otherBug.setAlive(false);  // Set otherBug as dead
-        cout << "Bug " << getType() << " eats bug " << otherBug.getType() << "!" << endl;
-    } else {
-        cout << "Bug " << getType() << " cannot eat bug " << otherBug.getType() << " as it is already dead!" << endl;
-    }
-}
-
-
 
 
 

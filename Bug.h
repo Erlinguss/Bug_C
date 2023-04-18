@@ -13,7 +13,7 @@
 using namespace std;
 
 
-enum class Direction { NORTH =1 , EAST =2, SOUTH =3, WEST =4 };
+enum class Direction { NORTH , EAST , SOUTH , WEST  };
 
 class Bug {
 public:
@@ -48,8 +48,8 @@ public:
     void tap();
     void collide(Bug *pBug);
     bool isOccupied(const std::pair<int, int>& position) const;
-    Bug * eat(Bug& otherBug);
 
+    void eat(int i);
 
     // Initialize bugs as an empty vector
     vector<Bug*> bugs;
@@ -71,8 +71,6 @@ protected:
     bool m_tapped;
     sf::Color m_color;
     int hopLength;
-
-    void fight();
 
 };
 

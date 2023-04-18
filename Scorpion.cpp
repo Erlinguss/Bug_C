@@ -35,7 +35,7 @@ void Scorpion::move() {
 Direction Scorpion::getRandomDirection() const {
     static random_device rd;
     static mt19937 gen(rd());
-    static uniform_int_distribution<> dis(1, 6);
+    static uniform_int_distribution<> dis(0, 3);
     int randInt = dis(gen);
     return static_cast<Direction>(randInt);
 }

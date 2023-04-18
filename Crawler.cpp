@@ -9,7 +9,7 @@ const int BOARD_WIDTH = 10; // Width of the board in cells
 const int BOARD_HEIGHT = 10; // Height of the board in cells
 
 Crawler::Crawler(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path )
-        : Bug(id, position.first, position.second, getRandomDirection(), size, alive, path)
+        : Bug(id, position.first, position.second, direction, size, alive, path)
 {
     this->m_color = sf::Color::Green;
 }

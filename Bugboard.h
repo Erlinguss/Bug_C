@@ -27,10 +27,8 @@ public:
     void tapBoard();
     void displayLifeHistory() const;
     void displayCells() const;
-    void runSimulation(sf::RenderWindow& window);
+    void runSimulation();
     void writeLifeHistoryToFile();
-//    void eat();
-//    void BugData();
     void initializeBoard();
     void addBug(Bug* bug);
     vector<Bug*> getBoard();
@@ -42,12 +40,12 @@ public:
 protected:
 
     vector<Bug*> bugs;
-    vector<Bug*> bug_vector;
 
     void header() const;
     void footer() const;
 
 
+    void eat();
 };
 
 #endif

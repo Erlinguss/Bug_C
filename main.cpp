@@ -6,13 +6,12 @@
 #include "Bug.h"
 #include "Bugboard.h"
 
-
 using namespace std;
 
 const int CELL_SIZE = 50; // Size of each cell in pixels
+void gui(BugBoard &board);
+
 int main() {
-    // Create the window
-    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * BOARD_WIDTH, CELL_SIZE * BOARD_HEIGHT), "Bug Board");
 
     // Create the bugs vector
     vector<Bug*> bug_vector;
@@ -41,6 +40,8 @@ int main() {
         cout << "╠══════════════════════════════════╣" << endl;
         cout << "║ Enter your choice (1-9):         ║" << endl;
         cout << "╚══════════════════════════════════╝" << endl;
+        cout << ">" << endl;
+
 
 
         try {
@@ -69,6 +70,7 @@ int main() {
                 break;
             case 4:
                 board.tapBoard();
+                cout << "Bugs were tapped" << endl;
                 cout << endl;
                 break;
             case 5:
@@ -80,7 +82,7 @@ int main() {
                 cout << endl;
                 break;
             case 7:
-                board.runSimulation(window);
+                gui(board);
                 cout << endl;
                 break;
             case 8:
@@ -91,13 +93,37 @@ int main() {
             case 9:
                 cout << endl;
                 cout << "End of the program." << endl;
-                //return 0;
+                return 0;
+                break;
             default:
                 cout << endl;
                 cout << "Invalid option" << endl;
                 cout << endl;
         }
+    }
 
+    for (Bug *bug: bug_vector) {
+        delete bug;
+    }
+    return 0;
+}
+
+void gui(BugBoard &board) {// Create the window
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * BOARD_WIDTH, CELL_SIZE * BOARD_HEIGHT), "Bug Board");
+
+    while(window.isOpen()) {
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if(event.type == sf::Event::MouseButtonPressed) {
+
+                board.tapBoard();
+               // board.runSimulation();
+            }
+          }
         // Redraw the window after each menu option is executed
         window.clear(sf::Color(127, 127, 127));
 
@@ -112,25 +138,15 @@ int main() {
                 window.draw(cellShape);
             }
         }
-
-
-        for (Bug *bug: bug_vector) {
-            sf::CircleShape bugShape(bug->getSize() / 2);
-            bugShape.setPosition(bug->getPosition().first + CELL_SIZE / 2 - bugShape.getRadius(),
-                                 bug->getPosition().second + CELL_SIZE / 2 - bugShape.getRadius());
+        for (Bug *bug: board.getBoard()) {
+            sf::CircleShape bugShape(bug->getSize());
+            bugShape.setPosition((bug->getPosition().first*CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius(),
+                                 (bug->getPosition().second*CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
             bugShape.setFillColor(bug->getColor());
             window.draw(bugShape);
         }
 
         window.display();
-
-
-        // Delete the bugs
-        for (Bug *bug: bug_vector) {
-            delete bug;
-        }
-
-
     }
-    return 0;
+
 }

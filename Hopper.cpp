@@ -38,7 +38,7 @@ void Hopper::move() {
 void Hopper::setRandomDirection() {
     static random_device rd;
     static mt19937 gen(rd());
-    static uniform_int_distribution<> dis(1, 4);
+    static uniform_int_distribution<> dis(0, 3);
     int randInt = dis(gen);
     direction = static_cast<Direction>(randInt);
 }
@@ -81,10 +81,6 @@ bool Hopper::canHop(const std::pair<int, int>& direction) const {
 }
 
 void Hopper::BugData() {
-
-    enum direction {
-        NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4
-    };
 
     string BugAlive = (this->alive ? "Alive" : "Dead");
 
