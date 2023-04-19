@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int CELL_SIZE = 50; // Size of each cell in pixels
+const int CELL_SIZE = 50;
 
 BugBoard::BugBoard() {
 
@@ -25,7 +25,7 @@ void BugBoard::initializeBoard() {
     ifstream inFile("bugs.txt");
     if (!inFile.is_open()) {
         cerr << "Unable to open file bugs.txt" << endl;
-        return; // Return early if file cannot be opened
+        return;
     }
     string line;
     while (getline(inFile, line)) {
@@ -39,9 +39,7 @@ void BugBoard::initializeBoard() {
         getline(ss, bugType, ';');
         //ss>>id >> x >> y  >> size >> hopLength >> alive;
 
-
-        // Set a default value for alive (e.g., true or false)
-        alive = false; // or true, depending on desired default value
+        alive = false;
 
         if (bugType == "C") {
             getline(ss, temp, ';');
@@ -147,14 +145,40 @@ void BugBoard::tapBoard() {
 
     // Call move() function on all bugs
     for (Bug *bug: bugs) {
-        bug->move();
+        if(bug->isAlive())
+            bug->move();
     }
+    for (size_t i = 0; i < bugs.size(); ++i) {
+        for (size_t j = i + 1; j < bugs.size(); ++j) {
+            if (bugs[i]->isAlive() && bugs[j]->isAlive() && bugs[i]->getPosition() == bugs[j]->getPosition()) {
 
-    for (Bug *bug: bugs) {
-       bug->eat(bug->getSize());
+                // Determine which bug eats the other
+                if (bugs[i]->getSize() > bugs[j]->getSize()) {
+                    bugs[i]->eat(bugs[j]->getSize());
+                    bugs[j]->setAlive(false);
+                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
+                    bugs[j]->eat(bugs[i]->getSize());
+                    bugs[i]->setAlive(false);
+                } else {
+
+                    // Randomly determine which bug eats the other
+                    int winner = rand() % 2;
+                    if (winner == 0) {
+                        bugs[i]->eat(bugs[j]->getSize());
+                        bugs[j]->setAlive(false);
+                    } else {
+                        bugs[j]->eat(bugs[i]->getSize());
+                        bugs[i]->setAlive(false);
+                    }
+                }
+            }
         }
     }
-
+//    for (Bug *bug: bugs) {
+//       bug->eat(bug->getSize());
+//        }
+//    }
+}
 
 void BugBoard::displayLifeHistory() const {
 

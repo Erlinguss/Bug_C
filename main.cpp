@@ -86,7 +86,6 @@ int main() {
                 cout << endl;
                 break;
             case 8:
-                // Write Life History of all Bugs to file
                 board.writeLifeHistoryToFile();
                 cout << "Data was saved in the file" << endl;
                 break;
@@ -110,7 +109,10 @@ int main() {
 
 void gui(BugBoard &board) {// Create the window
     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * BOARD_WIDTH, CELL_SIZE * BOARD_HEIGHT), "Bug Board");
-
+    sf::Time time1;
+    sf::Clock clock;
+    time1 = clock.getElapsedTime();
+    bool runSimulation = false;
     while(window.isOpen()) {
 
         sf::Event event;
@@ -121,7 +123,11 @@ void gui(BugBoard &board) {// Create the window
             if(event.type == sf::Event::MouseButtonPressed) {
 
                 board.tapBoard();
-               // board.runSimulation();
+                //board.runSimulation();
+            }
+            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+                cout << "simulation Start" << endl;
+                runSimulation = !runSimulation;
             }
           }
         // Redraw the window after each menu option is executed
@@ -144,6 +150,24 @@ void gui(BugBoard &board) {// Create the window
                                  (bug->getPosition().second*CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
             bugShape.setFillColor(bug->getColor());
             window.draw(bugShape);
+
+            if(runSimulation) {
+                float diff = clock.getElapsedTime().asSeconds()-time1.asSeconds();
+                if (diff >= 0.5) {
+                    board.tapBoard();
+                    time1 = clock.getElapsedTime();
+                      }
+                int c = 0;
+                for(Bug* bug: board.getBoard())
+                {
+                    if(bug->isAlive())
+                    {
+                        c++;
+                    }
+                }
+                if(c==1)
+                    runSimulation = false;
+            }
         }
 
         window.display();

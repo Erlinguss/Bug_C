@@ -41,7 +41,10 @@ public:
     //virtual void move() = 0;
     virtual void move();
     virtual int getHopLength();
-    bool isWayBlocked() const;
+    bool isWayBlocked()
+    {
+        isWayBlocked(10);
+    }
     const sf::Color &getColor() const;
     string getType() const;
     void  setType(string type);

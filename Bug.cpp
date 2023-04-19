@@ -128,8 +128,6 @@ void Bug::BugData() {
     int ColumnWidth = 13;
     int statusColumnWidth = 10;
 
-
-// Common parts of the output string
     std::ostringstream oss;
     oss << setw(idColumnWidth) << left << std::to_string(this->getId())
         << setw(typeColumnWidth) << left << type
@@ -150,20 +148,19 @@ void Bug::BugData() {
             << setw(statusColumnWidth) << left << BugAlive;
     }
 
-// Output the final string with aligned columns
     std::cout << oss.str() << std::endl;
 }
 
 
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
-        case Direction::NORTH:
+        case Direction::WEST:
             return position.first == 0;
         case Direction::EAST:
-            return position.second == board_size - 1;
-        case Direction::SOUTH:
             return position.first == board_size - 1;
-        case Direction::WEST:
+        case Direction::SOUTH:
+            return position.second == board_size - 1;
+        case Direction::NORTH:
             return position.second == 0;
         default:
             throw std::runtime_error("Invalid direction");
@@ -192,59 +189,16 @@ void Bug::move() {
 }
 
 const sf::Color& Bug::getColor() const {
+    if(alive)
     return  m_color;
+    else
+        return sf::Color::Black;
 }
 
 
-//void Bug::tap() {
-//    if (!m_tapped) {
-//        m_tapped = true;
-//
-//        // Call move() on all bugs
-//        for (auto& bug : bugs) {
-//            bug->move();
-//        }
-//
-//        // Implement the fight/eat behavior
-//        for (auto& bug : bugs) {
-//          bug->eat(getSize());
-//           }
-//        }
-//    }
-
-
 void Bug::eat(int i) {
-    // Check for bugs on the same cell
-    for (size_t i = 0; i < bugs.size(); ++i) {
-        for (size_t j = i + 1; j < bugs.size(); ++j) {
-            if (bugs[i]->getPosition() == bugs[j]->getPosition()) {
 
-                // Determine which bug eats the other
-                if (bugs[i]->getSize() > bugs[j]->getSize()) {
-                    bugs[i]->eat(bugs[j]->getSize());
-                    bugs[j]->setAlive(false);
-                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
-                    bugs[j]->eat(bugs[i]->getSize());
-                    bugs[i]->setAlive(false);
-                } else {
-
-                    // Randomly determine which bug eats the other
-                    int winner = rand() % 2;
-                    if (winner == 0) {
-                        bugs[i]->eat(bugs[j]->getSize());
-                        bugs[j]->setAlive(false);
-                    } else {
-                        bugs[j]->eat(bugs[i]->getSize());
-                        bugs[i]->setAlive(false);
-                    }
-                }
-            }
-        }
-    }
-    // Remove dead bugs
-    bugs.erase(remove_if(bugs.begin(), bugs.end(), [](Bug* bug) {
-        return !bug->isAlive();
-    }), bugs.end());
+    size+= i;
 }
 
 

@@ -20,19 +20,43 @@ void Hopper::setHopLength(int hopLength) {
 }
 
 void Hopper::move() {
+
+
+    while(this->isWayBlocked())
+    {
+        //cout << "CChat" <<endl;
+        setRandomDirection();
+    }
     pair<int, int> Direction_X_Y = getDirection();
     int directionX = Direction_X_Y.first;
     int directionY = Direction_X_Y.second;
-
-    if (canHop(Direction_X_Y)) {
+    //if (canHop(Direction_X_Y)) {
         int newDirectionX = position.first + directionX * hopLength;
         int newDirectionY = position.second + directionY * hopLength;
+        if(newDirectionX >9)
+        {
+            newDirectionX = 9;
+        }
+        else if(newDirectionX <0)
+        {
+            newDirectionX = 0;
+        }
+        if(newDirectionY >9)
+        {
+            newDirectionY= 9;
+        }
+        else if(newDirectionY <0)
+        {
+            newDirectionY = 0;
+        }
+
+
+
         setPosition(make_pair(newDirectionX, newDirectionY));
         addToPath(getPosition());
-    }
-    else {
-        setRandomDirection();
-    }
+    //}
+
+
 }
 
 void Hopper::setRandomDirection() {
