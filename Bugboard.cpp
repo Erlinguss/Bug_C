@@ -3,6 +3,7 @@
 //
 
 #include "Bugboard.h"
+#include "SuperBug.h"
 #include <iomanip>
 
 using namespace std;
@@ -51,15 +52,14 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
-            Crawler* crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            Crawler *crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
             crawler->setType("Crawler");
             bugs.push_back(crawler);
-        }
-        else if (bugType == "H") {
+        } else if (bugType == "H") {
             getline(ss, temp, ';');
             id = stoi(temp);
             getline(ss, temp, ';');
@@ -67,16 +67,15 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
             getline(ss, temp, ';');
             hopLength = stoi(temp);
-            Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, alive, list<pair<int, int>>(),  hopLength);
+            Hopper *hopper = new Hopper(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>(), hopLength);
             hopper->setType("Hopper");
             bugs.push_back(hopper);
-        }
-        else if(bugType == "S") {
+        } else if (bugType == "S") {
             getline(ss, temp, ';');
             id = stoi(temp);
             getline(ss, temp, ';');
@@ -84,13 +83,30 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
-            Scorpion* scorpion = new Scorpion(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            Scorpion *scorpion = new Scorpion(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
             scorpion->setType("Scorpion");
             bugs.push_back(scorpion);
+
+        } else if (bugType == "SU") {
+            getline(ss, temp, ';');
+            id = stoi(temp);
+            getline(ss, temp, ';');
+            x = stoi(temp);
+            getline(ss, temp, ';');
+            y = stoi(temp);
+            getline(ss, temp, ';');
+            direction = static_cast<Direction>(stoi(temp) - 1);
+            getline(ss, temp, ';');
+            size = stoi(temp);
+
+            SuperBug *superBug = new SuperBug(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            superBug->setType("SuperBug");
+            bugs.push_back(superBug);
+
         }
     }
     inFile.close();
@@ -156,8 +172,12 @@ void BugBoard::tapBoard() {
 
     // Call move() function on all bugs
     for (Bug *bug: bugs) {
-        if(bug->isAlive())
-            bug->move();
+        if(bug->isAlive()){
+            if (bug->getType() !="SuperBug"){
+                bug->move();
+            }
+        }
+
     }
     for (size_t i = 0; i < bugs.size(); ++i) {
         for (size_t j = i + 1; j < bugs.size(); ++j) {
@@ -207,6 +227,9 @@ void BugBoard::displayLifeHistory() const {
         }
         else if (dynamic_cast<Scorpion*>(bug) != nullptr) {
             type = "Scorpion";
+        }
+        else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
+            type = "SuperBug";
         }
         cout << bug->getId() <<" " << type << " Path(life history) : ";
         const auto& path = bug->getPath();
@@ -328,6 +351,9 @@ void BugBoard::writeLifeHistoryToFile() {
                 }
                 else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
                     type = "Scorpion";
+                }
+                else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
+                    type = "SuperBug";
                 }
             file << bug->getId() <<" " << type << " Path(life history) : ";
             const auto& path = bug->getPath();

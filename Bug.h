@@ -45,6 +45,7 @@ public:
     bool isWayBlocked()
     {
         isWayBlocked(10);
+        return false;
     }
 
     const sf::Color &getColor() const;

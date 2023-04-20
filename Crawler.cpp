@@ -58,3 +58,10 @@ bool Crawler::isValidPosition(const pair<int, int>& position) const {
     return PositionX >= 0 && PositionX< BOARD_WIDTH && PositionY >= 0 && PositionY< BOARD_HEIGHT && !isOccupied(position);
 }
 
+
+
+
+
+
+
+

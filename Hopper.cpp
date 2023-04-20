@@ -149,6 +149,9 @@ void Hopper::BugData() {
     } else if (this->type == "Scorpion") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "SuperBug") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
     }
 
     cout << oss.str() << endl;

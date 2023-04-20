@@ -184,14 +184,14 @@ void gui(BugBoard &board) {
 
     // Load the bug texture
     sf::Texture bugTexture;
-    if (!bugTexture.loadFromFile("images.png")) {
+    if (!bugTexture.loadFromFile("images2.png")) {
         cerr << "Failed to load bug texture." << endl;
         return;
     }
 
     // Load the image texture
     sf::Texture imageTexture;
-    if (!imageTexture.loadFromFile("images.png")) {
+    if (!imageTexture.loadFromFile("images2.png")) {
         cerr << "Failed to load image texture." << endl;
         return;
     }
@@ -227,6 +227,7 @@ void gui(BugBoard &board) {
                 cout << "Simulation started." << endl;
                 runSimulation = !runSimulation;
             }
+
         }
 
         // Redraw the window after each menu option is executed
@@ -248,18 +249,40 @@ void gui(BugBoard &board) {
                 imageSprite.setPosition(cellCenter);
 
 
-
                 // Loop through all the bugs on the board
                 for (Bug *bug: board.getBoard()) {
                     // Check if the bug is in the current cell
                     if (bug->getPosition().first == x && bug->getPosition().second == y) {
                         // Create a circle shape for the bug
-                        sf::CircleShape bugShape(bug->getSize());
-                        bugShape.setPosition(
-                                (bug->getPosition().first * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius(),
-                                (bug->getPosition().second * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
-                        bugShape.setFillColor(bug->getColor());
-                        window.draw(bugShape);
+//                        sf::CircleShape bugShape(bug->getSize());
+//                        bugShape.setPosition(
+//                                (bug->getPosition().first * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius(),
+//                                (bug->getPosition().second * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
+//                        bugShape.setFillColor(bug->getColor());
+//                        window.draw(bugShape);
+
+                        float s = (bug->getSize()* 4 > 100 ? 100.f : (float) bug->getSize() * 4);
+
+                        imageSprite.setScale(sf::Vector2f (s / imageTexture.getSize().x, s / imageTexture.getSize().y));
+                        imageSprite.setPosition(sf::Vector2f((bug->getPosition().first +  0.4f) * CELL_SIZE, (bug->getPosition().second +  0.4f) * CELL_SIZE));
+
+                            window.draw(imageSprite);
+
+                        if(bug->getType()=="Crawler"){
+                            imageSprite.setColor(sf::Color::Green);
+                            }
+                        else if(bug->getType()=="Hopper"){
+                            imageSprite.setColor(sf::Color::Red);
+
+                        }
+                        else if(bug->getType()=="SuperBug"){
+                            imageSprite.setColor(sf::Color::Blue);
+
+                        }
+                        else{
+                            imageSprite.setColor(sf::Color::Yellow);
+
+                        }
 
                         // Draw the image sprite on the window
                         window.draw(imageSprite);
@@ -298,16 +321,6 @@ void gui(BugBoard &board) {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
