@@ -15,7 +15,7 @@ void gui(BugBoard &board);
 int main() {
 
     // Create the bugs vector
-    vector<Bug*> bug_vector;
+    vector<Bug *> bug_vector;
 
 
     // Initialize the bug board
@@ -42,7 +42,6 @@ int main() {
         cout << "║ Enter your choice (1-9):         ║" << endl;
         cout << "╚══════════════════════════════════╝" << endl;
         cout << ">" << endl;
-
 
 
         try {
@@ -75,6 +74,7 @@ int main() {
                 cout << endl;
                 break;
             case 5:
+
                 board.displayLifeHistory();
                 cout << endl;
                 break;
@@ -107,73 +107,6 @@ int main() {
     }
     return 0;
 }
-
-
-//void gui(BugBoard &board) {// Create the window
-//    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * BOARD_WIDTH, CELL_SIZE * BOARD_HEIGHT), "Bug Board");
-//    sf::Time time1;
-//    sf::Clock clock;
-//
-//
-//    time1 = clock.getElapsedTime();
-//    bool runSimulation = false;
-//    while (window.isOpen()) {
-//
-//        sf::Event event;
-//        while (window.pollEvent(event)) {
-//            if (event.type == sf::Event::Closed)
-//                window.close();
-//            if (event.type == sf::Event::MouseButtonPressed) {
-//
-//                board.tapBoard();
-//                //board.runSimulation();
-//            }
-//            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
-//                cout << "simulation Start" << endl;
-//                runSimulation = !runSimulation;
-//            }
-//        }
-//        // Redraw the window after each menu option is executed
-//        window.clear(sf::Color(127, 127, 127));
-//
-//        // Draw cells and bugs on the window
-//        for (int x = 0; x < BOARD_WIDTH; x++) {
-//            for (int y = 0; y < BOARD_HEIGHT; y++) {
-//                sf::RectangleShape cellShape(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-//                cellShape.setPosition(x * CELL_SIZE, y * CELL_SIZE);
-//                cellShape.setFillColor(sf::Color::White);
-//                cellShape.setOutlineThickness(1);
-//                cellShape.setOutlineColor(sf::Color(192, 192, 192));
-//                window.draw(cellShape);
-//            }
-//        }
-//        for (Bug *bug: board.getBoard()) {
-//            sf::CircleShape bugShape(bug->getSize());
-//            bugShape.setPosition((bug->getPosition().first * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius(),
-//                                 (bug->getPosition().second * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
-//            bugShape.setFillColor(bug->getColor());
-//            window.draw(bugShape);
-//
-//            if (runSimulation) {
-//                float diff = clock.getElapsedTime().asSeconds() - time1.asSeconds();
-//                if (diff >= 0.5) {
-//                    board.tapBoard();
-//                    time1 = clock.getElapsedTime();
-//                }
-//                int c = 0;
-//                for (Bug *bug: board.getBoard()) {
-//                    if (bug->isAlive()) {
-//                        c++;
-//                    }
-//                }
-//                if (c == 1)
-//                    runSimulation = false;
-//            }
-//        }
-//
-//        window.display();
-//    }
-//}
 
 
 void gui(BugBoard &board) {
@@ -228,16 +161,16 @@ void gui(BugBoard &board) {
                 runSimulation = !runSimulation;
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::W) {
-                board.moveSuperBug(0,-1);
+                board.moveSuperBug(0, -1);
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A) {
-                board.moveSuperBug(-1,0);
+                board.moveSuperBug(-1, 0);
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S) {
-                board.moveSuperBug(0,1);
+                board.moveSuperBug(0, 1);
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D) {
-                board.moveSuperBug(1,0);
+                board.moveSuperBug(1, 0);
             }
         }
 
@@ -259,14 +192,11 @@ void gui(BugBoard &board) {
                 // Set the position of the image sprite to the center of the current cell
                 imageSprite.setPosition(cellCenter);
 
-
-
                 // Check if the simulation is running
                 if (runSimulation) {
                     // Get the time difference between now and the last tap
                     float diff = clock.getElapsedTime().asSeconds() - time1.asSeconds();
 
-                    // If it has been more than 0.5 seconds, tap the board and update the time
                     if (diff >= 0.5) {
                         board.tapBoard();
                         time1 = clock.getElapsedTime();
@@ -289,48 +219,31 @@ void gui(BugBoard &board) {
 
         // Loop through all the bugs on the board
         for (Bug *bug: board.getBoard()) {
+
             // Check if the bug is in the current cell
-          //  if (bug->getPosition().first == x && bug->getPosition().second == y) {
-                // Create a circle shape for the bug
-//                        sf::CircleShape bugShape(bug->getSize());
-//                        bugShape.setPosition(
-//                                (bug->getPosition().first * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius(),
-//                                (bug->getPosition().second * CELL_SIZE) + CELL_SIZE / 2 - bugShape.getRadius());
-//                        bugShape.setFillColor(bug->getColor());
-//                        window.draw(bugShape);
+            float s = (bug->getSize() * 4 > 100 ? 100.f : (float) bug->getSize() * 4);
+            imageSprite.setScale(sf::Vector2f(s / imageTexture.getSize().x, s / imageTexture.getSize().y));
+            imageSprite.setPosition(sf::Vector2f((bug->getPosition().first + 0.4f) * CELL_SIZE,
+                                                 (bug->getPosition().second + 0.4f) * CELL_SIZE));
+            window.draw(imageSprite);
 
-                float s = (bug->getSize()* 4 > 100 ? 100.f : (float) bug->getSize() * 4);
-                imageSprite.setScale(sf::Vector2f (s / imageTexture.getSize().x, s / imageTexture.getSize().y));
-                imageSprite.setPosition(sf::Vector2f((bug->getPosition().first +  0.4f) * CELL_SIZE, (bug->getPosition().second +  0.4f) * CELL_SIZE));
-                window.draw(imageSprite);
+            if (!bug->isAlive()) {
+                imageSprite.setColor(sf::Color::Black);
+            } else if (bug->getType() == "Crawler") {
+                imageSprite.setColor(sf::Color::Green);
+            } else if (bug->getType() == "Hopper") {
+                imageSprite.setColor(sf::Color::Red);
+            } else if (bug->getType() == "SuperBug") {
+                imageSprite.setColor(sf::Color::Blue);
+            } else {
+                imageSprite.setColor(sf::Color::Yellow);
+            }
 
-                if(!bug->isAlive())
-                {
-                    imageSprite.setColor(sf::Color::Black);
-                }
-                else if(bug->getType()=="Crawler"){
-                    imageSprite.setColor(sf::Color::Green);
-                }
-                else if(bug->getType()=="Hopper"){
-                    imageSprite.setColor(sf::Color::Red);
-
-                }
-                else if(bug->getType()=="SuperBug"){
-                    imageSprite.setColor(sf::Color::Blue);
-
-                }
-                else{
-                    imageSprite.setColor(sf::Color::Yellow);
-
-                }
-
-                // Draw the image sprite on the window
-                window.draw(imageSprite);
-     //       }
+            // Draw the image sprite on the window
+            window.draw(imageSprite);
         }
 
-
-// Display the updated window
+        // Display the updated window
         window.display();
 
     }

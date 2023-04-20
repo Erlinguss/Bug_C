@@ -7,19 +7,23 @@
 
 #include "Bug.h"
 
-class SuperBug : public Bug{
+class SuperBug : public Bug {
 public:
- SuperBug(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path );
+    SuperBug(int id, pair<int, int> position, Direction direction, int size, bool alive, list <pair<int, int>> path);
 
     void move() override;
+
     void move(int x, int y);
+
 private:
 
     Direction getRandomDirection() const;
-    pair<int, int> getNextPosition() const;
-    bool isValidPosition(const pair<int, int>& position) const;
-    Direction direction;
 
+    pair<int, int> getNextPosition() const;
+
+    bool isValidPosition(const pair<int, int> &position) const;
+
+    Direction direction;
 
 };
 

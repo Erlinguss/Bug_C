@@ -12,14 +12,15 @@
 using namespace std;
 
 
-Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive,  list<pair<int, int>> path)
-        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true) , path(path)  {
+Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive, list<pair<int, int>> path)
+        : id(id), position(std::make_pair(x, y)), direction(direction), size(size), alive(true), path(path) {
     this->path = path;
 
 }
+
 //==================GETTERS & SETTERS=================
 int Bug::getId() const {
-    return this-> id;
+    return this->id;
 }
 
 int Bug::getHopLength() {
@@ -31,64 +32,60 @@ pair<int, int> Bug::getPosition() const {
 }
 
 Direction Bug::getDirection() const {
-    return this -> direction;
+    return this->direction;
 }
 
 int Bug::getSize() const {
-    return this-> size;
+    return this->size;
 }
 
 void Bug::setSize(int size) {
-    this ->size =size;
+    this->size = size;
 }
 
 bool Bug::isAlive() const {
-    return this -> alive;
+    return this->alive;
 }
 
 void Bug::setAlive(bool alive) {
     this->alive = alive;
 }
 
-
-const list<std::pair<int, int>>& Bug::getPath() const {
-    return this-> path;
+const list<std::pair<int, int>> &Bug::getPath() const {
+    return this->path;
 }
 
-string Bug::getType() const{
+string Bug::getType() const {
     return this->type;
 }
 
-void Bug:: setType(string type){
-    this->type= type;
+void Bug::setType(string type) {
+    this->type = type;
 }
 
-void Bug::addToPath(const std::pair<int, int>& point) {
+void Bug::addToPath(const std::pair<int, int> &point) {
     path.push_back(point);
 }
 
-void Bug::setPosition(const std::pair<int, int>& new_position) {
+void Bug::setPosition(const std::pair<int, int> &new_position) {
     position = new_position;
 }
 
-bool Bug::isOccupied(const std::pair<int, int>& position) const {
+bool Bug::isOccupied(const std::pair<int, int> &position) const {
     return (getPosition() == position);
 }
 
-void Bug::collide(Bug* pBug) {
+void Bug::collide(Bug *pBug) {
     if (pBug != nullptr) {
         if (pBug->isAlive() && isAlive()) {
-            if(size < pBug->getSize())
-            {
+            if (size < pBug->getSize()) {
                 setAlive(false);
                 m_color = sf::Color::Yellow;
                 size += pBug->getSize();
-            }
-            else
-            {
+            } else {
                 pBug->setAlive(false);
                 pBug->m_color = sf::Color::Yellow;
-                pBug->setSize(pBug->getSize()+size);
+                pBug->setSize(pBug->getSize() + size);
             }
         }
     }
@@ -132,7 +129,7 @@ void Bug::BugData() {
     oss << setw(idColumnWidth) << left << std::to_string(this->getId())
         << setw(typeColumnWidth) << left << type
         << setw(positionColumnWidth) << left << "(" + std::to_string(this->getPosition().first) + "," +
-                                                          std::to_string(this->getPosition().second) + ")"
+                                                std::to_string(this->getPosition().second) + ")"
         << std::setw(directionColumnWidth) << std::left << BugDirection
         << std::setw(sizeColumnWidth) << std::left << std::to_string(this->getSize());
 
@@ -146,15 +143,13 @@ void Bug::BugData() {
     } else if (this->type == "Scorpion") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
-    }
-    else if (this->type == "SuperBug") {
+    } else if (this->type == "SuperBug") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
     }
-    
+
     std::cout << oss.str() << std::endl;
 }
-
 
 
 /*=======================================================
@@ -200,18 +195,19 @@ void Bug::move() {
 
 }
 
-const sf::Color& Bug::getColor() const {
-    if(alive)
-    return  m_color;
+const sf::Color &Bug::getColor() const {
+    if (alive)
+        return m_color;
     else
         return sf::Color::Black;
 }
 
-
 void Bug::eat(int i) {
 
-    size+= i;
+    size += i;
 }
+
+
 
 
 

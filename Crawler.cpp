@@ -5,15 +5,17 @@
 #include <random>
 #include <string>
 
-const int BOARD_WIDTH = 10; // Width of the board in cells
-const int BOARD_HEIGHT = 10; // Height of the board in cells
+const int BOARD_WIDTH = 10;
+const int BOARD_HEIGHT = 10;
 
-Crawler::Crawler(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path )
-        : Bug(id, position.first, position.second, direction, size, alive, path)
-{
+Crawler::Crawler(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path)
+        : Bug(id, position.first, position.second, direction, size, alive, path) {
     this->m_color = sf::Color::Green;
 }
 
+/*=======================================================
+             METHOD TO MOVE THE CRAWLER
+========================================================*/
 void Crawler::move() {
     pair<int, int> newPosition = getNextPosition();
     while (!isValidPosition(newPosition)) {
@@ -24,6 +26,9 @@ void Crawler::move() {
     addToPath(newPosition);
 }
 
+/*=======================================================
+          METHOD TO GET A RANDOM DIRECTION
+========================================================*/
 Direction Crawler::getRandomDirection() const {
     static random_device rd;
     static mt19937 gen(rd());
@@ -32,7 +37,7 @@ Direction Crawler::getRandomDirection() const {
     return static_cast<Direction>(randInt);
 }
 
- pair<int, int> Crawler::getNextPosition() const {
+pair<int, int> Crawler::getNextPosition() const {
     int crawlerX = getPosition().first;
     int crawlerY = getPosition().second;
     switch (direction) {
@@ -52,10 +57,14 @@ Direction Crawler::getRandomDirection() const {
     return make_pair(crawlerX, crawlerY);
 }
 
-bool Crawler::isValidPosition(const pair<int, int>& position) const {
+/*=======================================================
+     METHOD TO CHECK IF THERE IS A VALID POSITION
+========================================================*/
+bool Crawler::isValidPosition(const pair<int, int> &position) const {
     int PositionX = position.first;
     int PositionY = position.second;
-    return PositionX >= 0 && PositionX< BOARD_WIDTH && PositionY >= 0 && PositionY< BOARD_HEIGHT && !isOccupied(position);
+    return PositionX >= 0 && PositionX < BOARD_WIDTH && PositionY >= 0 && PositionY < BOARD_HEIGHT &&
+           !isOccupied(position);
 }
 
 

@@ -7,15 +7,19 @@
 #include <string>
 
 
-const int BOARD_WIDTH = 10; // Width of the board in cells
-const int BOARD_HEIGHT = 10; // Height of the board in cells
+const int BOARD_WIDTH = 10;
+const int BOARD_HEIGHT = 10;
 static const int MAX_ATTEMPTS = 5;
 
-Scorpion::Scorpion(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path)
+Scorpion::Scorpion(int id, pair<int, int> position, Direction direction, int size, bool alive,
+                   list<pair<int, int>> path)
         : Bug(id, position.first, position.second, direction, size, alive, path) {
     this->m_color = sf::Color::Yellow;
 }
 
+/*=======================================================
+             METHOD TO MOVE THE SCORPION
+========================================================*/
 void Scorpion::move() {
     pair<int, int> newPosition = getNextPosition();
     bool isValid = isValidPosition(newPosition);
@@ -32,6 +36,9 @@ void Scorpion::move() {
     }
 }
 
+/*=======================================================
+          METHOD TO GET A RANDOM DIRECTION
+========================================================*/
 Direction Scorpion::getRandomDirection() const {
     static random_device rd;
     static mt19937 gen(rd());
@@ -48,20 +55,25 @@ pair<int, int> Scorpion::getNextPosition() const {
             scorpionY--;
             break;
         case Direction::EAST:
-            scorpionX ++;
+            scorpionX++;
             break;
         case Direction::SOUTH:
             scorpionY++;
             break;
         case Direction::WEST:
-            scorpionX --;
+            scorpionX--;
             break;
     }
     return make_pair(scorpionX, scorpionY);
 }
 
-bool Scorpion::isValidPosition(const pair<int, int>& position) const {
+
+/*=======================================================
+     METHOD TO CHECK IF THERE IS A VALID POSITION
+========================================================*/
+bool Scorpion::isValidPosition(const pair<int, int> &position) const {
     int PositionX = position.first;
     int PositionY = position.second;
-    return PositionX >= 0 && PositionX< BOARD_WIDTH && PositionY >= 0 && PositionY< BOARD_HEIGHT && !isOccupied(position);
+    return PositionX >= 0 && PositionX <  BOARD_WIDTH && PositionY >= 0 && PositionY < BOARD_HEIGHT &&
+           !isOccupied(position);
 }

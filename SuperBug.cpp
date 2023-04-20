@@ -3,41 +3,43 @@
 //
 #include <random>
 #include "SuperBug.h"
-const int BOARD_WIDTH = 10; // Width of the board in cells
-const int BOARD_HEIGHT = 10; // Height of the board in cells
 
-SuperBug::SuperBug(int id, pair<int, int> position, Direction direction, int size, bool alive, list<pair<int, int>> path )
-        : Bug(id, position.first, position.second, direction, size, alive, path)
-{
+const int BOARD_WIDTH = 10;
+const int BOARD_HEIGHT = 10;
+
+SuperBug::SuperBug(int id, pair<int, int> position, Direction direction, int size, bool alive,
+                   list<pair<int, int>> path)
+        : Bug(id, position.first, position.second, direction, size, alive, path) {
     this->m_color = sf::Color::Blue;
 }
-void SuperBug::move(int x, int y)
-{
-    pair<int, int> newPosition = getPosition();
-    newPosition.first +=x ;
-    newPosition.second +=y ;
 
-    if(newPosition.first < 0)
-    {
+/*=======================================================
+         METHOD TO MOVE THE SUPER BUG SEPARATELY
+              FROM THE REST OF THE BUGS
+========================================================*/
+void SuperBug::move(int x, int y) {
+    pair<int, int> newPosition = getPosition();
+    newPosition.first += x;
+    newPosition.second += y;
+
+    if (newPosition.first < 0) {
         newPosition.first = 0;
     }
 
-    if(newPosition.first >9)
-    {
+    if (newPosition.first > 9) {
         newPosition.first = 9;
     }
 
-    if(newPosition.second < 0)
-    {
+    if (newPosition.second < 0) {
         newPosition.second = 0;
     }
 
-    if(newPosition.second > 9)
-    {
+    if (newPosition.second > 9) {
         newPosition.second = 9;
     }
     this->setPosition(newPosition);
 }
+
 void SuperBug::move() {
     pair<int, int> newPosition = getNextPosition();
     while (!isValidPosition(newPosition)) {
@@ -48,6 +50,9 @@ void SuperBug::move() {
     addToPath(newPosition);
 }
 
+/*=======================================================
+          METHOD TO GET A RANDOM DIRECTION
+========================================================*/
 Direction SuperBug::getRandomDirection() const {
     static random_device rd;
     static mt19937 gen(rd());
@@ -57,27 +62,31 @@ Direction SuperBug::getRandomDirection() const {
 }
 
 pair<int, int> SuperBug::getNextPosition() const {
-    int crawlerX = getPosition().first;
-    int crawlerY = getPosition().second;
+    int SuperBugX = getPosition().first;
+    int SuperBugY = getPosition().second;
     switch (direction) {
         case Direction::NORTH:
-            crawlerY--;
+            SuperBugY--;
             break;
         case Direction::EAST:
-            crawlerX++;
+            SuperBugX++;
             break;
         case Direction::SOUTH:
-            crawlerY++;
+            SuperBugY++;
             break;
         case Direction::WEST:
-            crawlerX--;
+            SuperBugX--;
             break;
     }
-    return make_pair(crawlerX, crawlerY);
+    return make_pair(SuperBugX, SuperBugY);
 }
 
-bool SuperBug::isValidPosition(const pair<int, int>& position) const {
+/*=======================================================
+     METHOD TO CHECK IF THERE IS A VALID POSITION
+========================================================*/
+bool SuperBug::isValidPosition(const pair<int, int> &position) const {
     int PositionX = position.first;
     int PositionY = position.second;
-    return PositionX >= 0 && PositionX< BOARD_WIDTH && PositionY >= 0 && PositionY< BOARD_HEIGHT && !isOccupied(position);
+    return PositionX >= 0 && PositionX < BOARD_WIDTH && PositionY >= 0 && PositionY < BOARD_HEIGHT &&
+           !isOccupied(position);
 }

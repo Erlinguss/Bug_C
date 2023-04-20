@@ -13,25 +13,13 @@ const int CELL_SIZE = 50;
 BugBoard::BugBoard() {
 }
 
-
-void BugBoard::moveSuperBug(int x, int y)
-{
-    for(Bug *b: bugs)
-    {
-        if(b->getType()=="SuperBug")
-        {
-            dynamic_cast<SuperBug*>(b)->move(x, y);
-        }
-    }
-}
-
 /*=======================================================
        METHOD TO LOAD THE BUGS FROM THE FILE
 ========================================================*/
 void BugBoard::initializeBoard() {
 
     // Clear the bugs vector
-    for (Bug* bug : bugs) {
+    for (Bug *bug: bugs) {
         delete bug;
     }
     bugs.clear();
@@ -83,6 +71,7 @@ void BugBoard::initializeBoard() {
             size = stoi(temp);
             getline(ss, temp, ';');
             hopLength = stoi(temp);
+
             Hopper *hopper = new Hopper(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>(), hopLength);
             hopper->setType("Hopper");
             bugs.push_back(hopper);
@@ -123,16 +112,16 @@ void BugBoard::initializeBoard() {
     inFile.close();
 }
 
-void BugBoard:: header() const{
-    cout << " "<< endl;
+void BugBoard::header() const {
+    cout << " " << endl;
     cout << "--------------------------------------------------------------------------" << endl;
     cout << "ID\tType\t\tPosition\tDirection\t\tSize\t\tHop Length\tStatus" << endl;
     cout << "--------------------------------------------------------------------------" << endl;
 }
 
-void BugBoard:: footer() const{
+void BugBoard::footer() const {
     cout << "--------------------------------------------------------------------------" << endl;
-    cout << " "<< endl;
+    cout << " " << endl;
 }
 
 /*=======================================================
@@ -140,11 +129,11 @@ void BugBoard:: footer() const{
 ========================================================*/
 void BugBoard::displayBugs() const {
 
-   header();
-    for ( Bug *bug : bugs) {
+    header();
+    for (Bug *bug: bugs) {
         bug->BugData();
     }
-   footer();
+    footer();
 }
 
 /*=======================================================
@@ -157,7 +146,7 @@ void BugBoard::findBug() const {
     bool found = false;
 
     header();
-    for (Bug *bug : bugs) {
+    for (Bug *bug: bugs) {
         if (bug->getId() == id) {
             found = true;
             bug->BugData();
@@ -170,10 +159,15 @@ void BugBoard::findBug() const {
         cout << "Bug with ID " << id << " not found." << endl;
     }
 }
-vector<Bug*> BugBoard::getBoard()
-{
+
+
+/*=======================================================
+          vector<Bug*>  RETURNING THE BUGS
+========================================================*/
+vector<Bug *> BugBoard::getBoard() {
     return bugs;
 }
+
 
 /*=======================================================
 METHOD THAT MOVE THE POSITION ALL THE BUGS IN THE CELLS
@@ -181,33 +175,34 @@ METHOD THAT MOVE THE POSITION ALL THE BUGS IN THE CELLS
 ========================================================*/
 void BugBoard::tapBoard() {
 
+    int x, y;
     // Call move() function on all bugs
     for (Bug *bug: bugs) {
-        if(bug->isAlive()){
-            if (bug->getType() !="SuperBug"){
+        if (bug->isAlive()) {
+            if (bug->getType() != "SuperBug") {
                 bug->move();
             }
         }
-
+//        else if(bug->getType() == "SuperBug"){
+//            dynamic_cast<SuperBug *>(bug)->move(x, y);
+//        }
     }
+
+
+
+
     for (size_t i = 0; i < bugs.size(); ++i) {
         for (size_t j = i + 1; j < bugs.size(); ++j) {
             if (bugs[i]->isAlive() && bugs[j]->isAlive() && bugs[i]->getPosition() == bugs[j]->getPosition()) {
 
                 // Determine which bug eats the other
-                if (bugs[i]->getSize() > bugs[j]->getSize())
-                {
+                if (bugs[i]->getSize() > bugs[j]->getSize()) {
                     bugs[i]->eat(bugs[j]->getSize());
                     bugs[j]->setAlive(false);
-                }
-                else if (bugs[i]->getSize() < bugs[j]->getSize())
-                {
+                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
                     bugs[j]->eat(bugs[i]->getSize());
                     bugs[i]->setAlive(false);
-                }
-                else
-                {
-
+                } else {
                     // Randomly determine which bug eats the other
                     int winner = rand() % 2;
                     if (winner == 0) {
@@ -218,7 +213,8 @@ void BugBoard::tapBoard() {
                         bugs[i]->setAlive(false);
                     }
                 }
-                cout << bugs[i]->getId() << (bugs[i]->isAlive()?"Alive":"Dead") << "   " << bugs[j]->getId() << (bugs[j]->isAlive()?"Alive":"Dead") << endl;
+                cout << bugs[i]->getId() << (bugs[i]->isAlive() ? " Alive" : " Dead") << "   " << bugs[j]->getId()
+                     << (bugs[j]->isAlive() ? " Alive" : " Dead") << endl;
             }
         }
     }
@@ -234,29 +230,30 @@ void BugBoard::tapBoard() {
 ========================================================*/
 void BugBoard::displayLifeHistory() const {
 
-    for (const auto bug : bugs) {
+    for (const auto bug: bugs) {
         string type = "";
-        if (dynamic_cast<Crawler*>(bug) != nullptr) {
+        if (dynamic_cast<Crawler *>(bug) != nullptr) {
             type = "Crawler";
-        }
-        else if (dynamic_cast<Hopper*>(bug) != nullptr) {
+        } else if (dynamic_cast<Hopper *>(bug) != nullptr) {
             type = "Hopper";
-        }
-        else if (dynamic_cast<Scorpion*>(bug) != nullptr) {
+        } else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
             type = "Scorpion";
-        }
-        else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
+        } else if (dynamic_cast<SuperBug *>(bug) != nullptr) {
             type = "SuperBug";
         }
-        cout << bug->getId() <<" " << type << " Path(life history) : ";
-        const auto& path = bug->getPath();
+
+        cout << bug->getId() << " " << type << " Path(life history) : ";
+        const auto &path = bug->getPath();
+
 
         if (path.empty()) {
             cout << "No movements yet" << endl;
         } else {
-            for (const auto& point : path) {
-                cout << "(" << point.first << "," << point.second << ") ";
+            for (const auto &point: path) {
+                cout << "(" << point.first << "," << point.second << ") " ;
+
             }
+            cout << (bug->isAlive() ? " Alive" : " Dead");
             cout << endl;
         }
     }
@@ -274,10 +271,12 @@ void BugBoard::displayCells() const {
     vector<vector<string>> bugContent(BOARD_WIDTH, vector<string>(BOARD_HEIGHT, "empty"));
 
     // Iterate over the bugs and update the content array
-    for (Bug* bug : bugs) {
+    for (Bug *bug: bugs) {
         if (bug->isAlive()) {
             auto position = bug->getPosition();
-            string content = "(" + to_string(position.first) + "," + to_string(position.second) + "): " + bug->getType() + " " + to_string(bug->getId());
+            string content =
+                    "(" + to_string(position.first) + "," + to_string(position.second) + "): " + bug->getType() + " " +
+                    to_string(bug->getId());
             bugContent[position.first][position.second] = content;
         }
     }
@@ -290,7 +289,7 @@ void BugBoard::displayCells() const {
         }
         cout << "|" << endl;
     }
-    cout << " "<< endl;
+    cout << " " << endl;
 }
 
 
@@ -298,8 +297,8 @@ void BugBoard::displayCells() const {
   TO DISPLAY THE SIMULATION STEPS SPECIFIED BY THE USER
 ========================================================*/
 void BugBoard::runSimulation() {
-  int numSteps;
-   cout << "Enter the number of simulation steps: ";
+    int numSteps;
+    cout << "Enter the number of simulation steps: ";
     cin >> numSteps;
 
     int numAliveBugs = 0; // Track the number of alive bugs
@@ -307,20 +306,20 @@ void BugBoard::runSimulation() {
     // Run the simulation for the specified number of steps
     for (int i = 0; i < numSteps; i++) {
         // Move bugs and check for collisions
-        for (auto bug : bugs) {
+        for (auto bug: bugs) {
             if (bug->isAlive()) {
                 // Move the bug
                 bug->move();
 
                 // Check for collision with other bugs
-                for (const auto other : bugs) {
+                for (const auto other: bugs) {
                     if (bug != other && bug->getPosition() == other->getPosition() && other->isAlive()) {
                         bug->collide(other);
                     }
                 }
 
                 // Check for collision with neighboring bugs
-                for (auto other : bugs) {
+                for (auto other: bugs) {
                     if (bug != other && bug->isAlive() && other->isAlive()) {
                         if (abs(bug->getPosition().first - other->getPosition().first) <= 1 &&
                             abs(bug->getPosition().second - other->getPosition().second) <= 1) {
@@ -335,15 +334,15 @@ void BugBoard::runSimulation() {
 
         // Update the number of alive bugs after each simulation step
         numAliveBugs = 0;
-        for (const auto bug : bugs) {
+        for (const auto bug: bugs) {
             if (bug->isAlive()) {
                 numAliveBugs++;
             }
         }
-        cout << " "<< endl;
+        cout << " " << endl;
         displayCells();
 
-       // Check if only one bug is alive and exit the simulation if true
+        // Check if only one bug is alive and exit the simulation if true
         if (numAliveBugs == 1) {
             cout << "Game Over!" << endl;
             return;
@@ -359,30 +358,51 @@ void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
     file.open("bugs_life_history_date_time.out.txt");
 
-        for (const auto &bug: bugs) {
-                string type = "";
-                if (dynamic_cast<Crawler *>(bug) != nullptr) {
-                    type = "Crawler";
-                } else if (dynamic_cast<Hopper *>(bug) != nullptr) {
-                    type = "Hopper";
-                }
-                else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
-                    type = "Scorpion";
-                }
-                else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
-                    type = "SuperBug";
-                }
-            file << bug->getId() <<" " << type << " Path(life history) : ";
-            const auto& path = bug->getPath();
-            if (path.empty()) {
-                file << "No movements yet" << endl;
-            } else {
-                for (const auto& point : path) {
-                    file<< "(" << point.first << "," << point.second << ") ";
-                }
-                file << endl;
-            }
+    for (const auto &bug: bugs) {
+        string type = "";
+        if (dynamic_cast<Crawler *>(bug) != nullptr) {
+            type = "Crawler";
+        } else if (dynamic_cast<Hopper *>(bug) != nullptr) {
+            type = "Hopper";
+        } else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
+            type = "Scorpion";
+        } else if (dynamic_cast<SuperBug *>(bug) != nullptr) {
+            type = "SuperBug";
         }
-        file.close();
-    }
 
+        file << bug->getId() << " " << type << " Path(life history) : ";
+        const auto &path = bug->getPath();
+
+
+        if (path.empty()) {
+            file << "No movements yet" << endl;
+        } else {
+            for (const auto &point: path) {
+                file << "(" << point.first << "," << point.second << ") ";
+            }
+            file << (bug->isAlive() ? " Alive" : " Dead");
+            file << endl;
+        }
+    }
+    file.close();
+}
+
+//void BugBoard::writeLifeHistoryToFile() {
+//    ofstream file;
+//    file.open("bugs_life_history_date_time.out.txt");
+//
+//    displayLifeHistory(file);
+//
+//    file.close();
+//}
+/*=======================================================
+          METHOD TO MOVE THE SUPER BUG SEPARATELY
+              FROM THE REST OF THE BUGS
+========================================================*/
+void BugBoard::moveSuperBug(int x, int y) {
+    for (Bug *b: bugs) {
+        if (b->getType() == "SuperBug") {
+            dynamic_cast<SuperBug *>(b)->move(x, y);
+        }
+    }
+}

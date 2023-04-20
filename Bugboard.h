@@ -13,6 +13,7 @@
 #include "Crawler.h"
 #include "Hopper.h"
 #include "Scorpion.h"
+
 using namespace std;
 
 const int BOARD_WIDTH = 10; // Width of the board in cells
@@ -24,26 +25,41 @@ public:
     BugBoard();
 
     void findBug() const;
+
     void tapBoard();
+
     void displayLifeHistory() const;
+
     void displayCells() const;
+
     void runSimulation();
+
     void writeLifeHistoryToFile();
+
     void initializeBoard();
-    void addBug(Bug* bug);
-    vector<Bug*> getBoard();
+
+    void addBug(Bug *bug);
+
+    vector<Bug *> getBoard();
+
     void displayBugs() const;
+
     void displayCells(int numSteps) const;
+
     void moveSuperBug(int x, int y);
+
 
 protected:
 
-    vector<Bug*> bugs;
+    vector<Bug *> bugs;
+
     void header() const;
+
     void footer() const;
 
-
     void eat();
+
+
 };
 
 #endif
