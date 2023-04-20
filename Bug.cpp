@@ -17,7 +17,7 @@ Bug::Bug(int id, int x, int y, Direction direction, int size, bool alive,  list<
     this->path = path;
 
 }
-
+//==================GETTERS & SETTERS=================
 int Bug::getId() const {
     return this-> id;
 }
@@ -94,8 +94,9 @@ void Bug::collide(Bug* pBug) {
     }
 }
 
-
-
+/*=======================================================
+             DISPLAY THE DATA FROM EACH BUG
+========================================================*/
 void Bug::BugData() {
 
     string BugAlive = (this->alive ? "Alive" : "Dead");
@@ -119,7 +120,6 @@ void Bug::BugData() {
             break;
     }
 
-// Set the column widths for each column
     int idColumnWidth = 4;
     int typeColumnWidth = 12;
     int positionColumnWidth = 12;
@@ -136,7 +136,7 @@ void Bug::BugData() {
         << std::setw(directionColumnWidth) << std::left << BugDirection
         << std::setw(sizeColumnWidth) << std::left << std::to_string(this->getSize());
 
-// Append varying parts based on bug type
+// display and classify the data by type of bug
     if (this->type == "Crawler") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
@@ -147,11 +147,14 @@ void Bug::BugData() {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
     }
-
     std::cout << oss.str() << std::endl;
 }
 
 
+
+/*=======================================================
+isWayBlocked() CHECK IF A BUG IS AGAINST AN EDGE OF THE BOARD
+========================================================*/
 bool Bug::isWayBlocked(int board_size) const {
     switch (direction) {
         case Direction::WEST:
@@ -167,6 +170,10 @@ bool Bug::isWayBlocked(int board_size) const {
     }
 }
 
+/*=======================================================
+TO MOVE A BUG FROM ITS CURRENT POSITION TO A NEW POSITION
+BASED ON MOVEMENT RULES FOR THE PARTICULAR BUG TYPE.
+========================================================*/
 void Bug::move() {
     path.push_back(getPosition());
     switch (direction) {

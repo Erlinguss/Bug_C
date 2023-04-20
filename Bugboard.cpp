@@ -13,6 +13,9 @@ BugBoard::BugBoard() {
 
 }
 
+/*=======================================================
+       METHOD TO LOAD THE BUGS FROM THE FILE
+========================================================*/
 void BugBoard::initializeBoard() {
 
     // Clear the bugs vector
@@ -37,7 +40,6 @@ void BugBoard::initializeBoard() {
         string temp;
 
         getline(ss, bugType, ';');
-        //ss>>id >> x >> y  >> size >> hopLength >> alive;
 
         alive = false;
 
@@ -102,10 +104,13 @@ void BugBoard:: header() const{
 }
 
 void BugBoard:: footer() const{
-      cout << "--------------------------------------------------------------------------" << endl;
-      cout << " "<< endl;
+    cout << "--------------------------------------------------------------------------" << endl;
+    cout << " "<< endl;
 }
 
+/*=======================================================
+        TO DISPLAY THE DATA FROM EACH BUG
+========================================================*/
 void BugBoard::displayBugs() const {
 
    header();
@@ -115,7 +120,9 @@ void BugBoard::displayBugs() const {
    footer();
 }
 
-
+/*=======================================================
+            FIND A BUG BY AN SPECIFIC ID
+========================================================*/
 void BugBoard::findBug() const {
     int id;
     cout << "Enter the ID of the bug you want to find: ";
@@ -141,6 +148,10 @@ vector<Bug*> BugBoard::getBoard()
     return bugs;
 }
 
+/*=======================================================
+METHOD THAT MOVE THE POSITION ALL THE BUGS IN THE CELLS
+     AND DETERMINE WHICH OF THE BUG EATS THE OTHER
+========================================================*/
 void BugBoard::tapBoard() {
 
     // Call move() function on all bugs
@@ -180,6 +191,10 @@ void BugBoard::tapBoard() {
 //    }
 }
 
+/*=======================================================
+  TO DISPLAY THE LIFE HISTORY OF EACH BUG IN THE GAME
+            CLASSIFYING BY TYPE AND THE PATH
+========================================================*/
 void BugBoard::displayLifeHistory() const {
 
     for (const auto bug : bugs) {
@@ -207,11 +222,12 @@ void BugBoard::displayLifeHistory() const {
     }
 }
 
-
+/*=======================================================
+        TO DISPLAY ALL THE BUGS IN EACH POSITION
+========================================================*/
 void BugBoard::displayCells() const {
     cout << "Current Cells:" << endl;
 
-    // Set the width of each cell to a fixed size
     int cellWidth = 20;
 
     // Create a 2D array to keep track of the bugs' positions
@@ -230,7 +246,7 @@ void BugBoard::displayCells() const {
     for (int y = 0; y < BOARD_HEIGHT; y++) {
         for (int x = 0; x < BOARD_WIDTH; x++) {
             string content = bugContent[x][y];
-            cout << "|" << setw(cellWidth) << left << content; // Display the bug content with aligned cells
+            cout << "|" << setw(cellWidth) << left << content;
         }
         cout << "|" << endl;
     }
@@ -238,6 +254,9 @@ void BugBoard::displayCells() const {
 }
 
 
+/*=======================================================
+  TO DISPLAY THE SIMULATION STEPS SPECIFIED BY THE USER
+========================================================*/
 void BugBoard::runSimulation() {
   int numSteps;
    cout << "Enter the number of simulation steps: ";
@@ -293,7 +312,9 @@ void BugBoard::runSimulation() {
     cout << "Game Over!" << endl;
 }
 
-
+/*=======================================================
+METHOD TO WRITE THE LIFE HISTORY OF ALL THE BUGS TO A FILE
+========================================================*/
 void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
     file.open("bugs_life_history_date_time.out.txt");

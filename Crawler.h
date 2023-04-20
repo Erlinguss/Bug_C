@@ -19,11 +19,8 @@ public:
 private:
 
     Direction getRandomDirection() const;
-
     pair<int, int> getNextPosition() const;
-
     bool isValidPosition(const pair<int, int>& position) const;
-
     Direction direction;
 };
 #endif // CRAWLER_H

@@ -30,7 +30,6 @@ void Hopper::move() {
     pair<int, int> Direction_X_Y = getDirection();
     int directionX = Direction_X_Y.first;
     int directionY = Direction_X_Y.second;
-    //if (canHop(Direction_X_Y)) {
         int newDirectionX = position.first + directionX * hopLength;
         int newDirectionY = position.second + directionY * hopLength;
         if(newDirectionX >9)
@@ -50,11 +49,8 @@ void Hopper::move() {
             newDirectionY = 0;
         }
 
-
-
         setPosition(make_pair(newDirectionX, newDirectionY));
         addToPath(getPosition());
-    //}
 
 
 }
@@ -127,8 +123,6 @@ void Hopper::BugData() {
             break;
     }
 
-
-// Set the column widths for each column
     int idColumnWidth = 4;
     int typeColumnWidth = 12;
     int positionColumnWidth = 12;
@@ -137,16 +131,15 @@ void Hopper::BugData() {
     int ColumnWidth = 13;
     int statusColumnWidth = 10;
 
-// Common parts of the output string
+
     std::ostringstream oss;
     oss << setw(idColumnWidth) << left << std::to_string(this->getId())
         << setw(typeColumnWidth) << left << type
         << setw(positionColumnWidth) << left << "(" + std::to_string(this->getPosition().first) + "," +
                                                 std::to_string(this->getPosition().second) + ")"
-        << std::setw(directionColumnWidth) << std::left << BugDirection
-        << std::setw(sizeColumnWidth) << std::left << std::to_string(this->getSize());
+        << setw(directionColumnWidth) << left << BugDirection
+        << setw(sizeColumnWidth) << left << std::to_string(this->getSize());
 
-// Append varying parts based on bug type
     if (this->type == "Crawler") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
@@ -158,7 +151,6 @@ void Hopper::BugData() {
             << setw(statusColumnWidth) << left << BugAlive;
     }
 
-// Output the final string with aligned columns
-    std::cout << oss.str() << std::endl;
+    cout << oss.str() << endl;
 
 }

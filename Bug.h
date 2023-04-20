@@ -20,60 +20,62 @@ public:
     Bug(int id, int x, int y, Direction direction, int size,  bool alive, const list<pair<int, int>> path);
 
 
-
     virtual ~Bug() {}
+    virtual void move();
+    virtual int getHopLength();
+    virtual void BugData();
 
     int getId() const;
-    pair<int, int> getPosition() const;
-    Direction getDirection() const;
     int getHopLength() const;
     int getSize() const;
-    bool isAlive() const;
-    const list<pair<int, int>>& getPath() const;
+
     void setId(int id);
     void setPosition(const std::pair<int, int>& position);
     void setDirection(Direction direction);
     void setSize(int size);
     void setAlive(bool alive);
     void addToPath(const std::pair<int, int>& position);
-
-
-    //virtual void move() = 0;
-    virtual void move();
-    virtual int getHopLength();
-    bool isWayBlocked()
-    {
-        isWayBlocked(10);
-    }
-    const sf::Color &getColor() const;
-    string getType() const;
     void  setType(string type);
     void tap();
     void collide(Bug *pBug);
     bool isOccupied(const std::pair<int, int>& position) const;
-
     void eat(int i);
 
-    // Initialize bugs as an empty vector
-    vector<Bug*> bugs;
-    virtual void BugData();
+    bool isAlive() const;
+    bool isWayBlocked()
+    {
+        isWayBlocked(10);
+    }
 
+    const sf::Color &getColor() const;
+    const list<pair<int, int>>& getPath() const;
+
+    string getType() const;
+
+    vector<Bug*> bugs;
+
+    Direction getDirection() const;
+    pair<int, int> getPosition() const;
 
 
 protected:
 
     int id;
+    int hopLength;
+    int size;
     std::pair<int, int> position;
     Direction direction;
-    int size;
+
     bool alive;
+    bool isWayBlocked(int board_size) const;
+    bool m_tapped;
+
     list<pair<int, int>> path;
     string status;
     string type;
-    bool isWayBlocked(int board_size) const;
-    bool m_tapped;
+
     sf::Color m_color;
-    int hopLength;
+
 
 };
 
