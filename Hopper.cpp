@@ -24,7 +24,7 @@ void Hopper::move() {
 
     while(this->isWayBlocked())
     {
-        //cout << "CChat" <<endl;
+        cout << "CChat" <<endl;
         setRandomDirection();
     }
     pair<int, int> Direction_X_Y = getDirection();
@@ -147,6 +147,9 @@ void Hopper::BugData() {
         oss << setw(ColumnWidth) << left << std::to_string(this->getHopLength())
             << setw(statusColumnWidth) << left << BugAlive;
     } else if (this->type == "Scorpion") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    } else if (this->type == "SuperBug") {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
     }

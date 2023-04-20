@@ -34,7 +34,7 @@ public:
     vector<Bug*> getBoard();
     void displayBugs() const;
     void displayCells(int numSteps) const;
-
+    void moveSuperBug(int x, int y);
 
 protected:
 

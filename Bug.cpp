@@ -147,6 +147,11 @@ void Bug::BugData() {
         oss << setw(ColumnWidth) << left << "-"
             << setw(statusColumnWidth) << left << BugAlive;
     }
+    else if (this->type == "SuperBug") {
+        oss << setw(ColumnWidth) << left << "-"
+            << setw(statusColumnWidth) << left << BugAlive;
+    }
+    
     std::cout << oss.str() << std::endl;
 }
 

@@ -3,6 +3,7 @@
 //
 
 #include "Bugboard.h"
+#include "SuperBug.h"
 #include <iomanip>
 
 using namespace std;
@@ -10,7 +11,18 @@ using namespace std;
 const int CELL_SIZE = 50;
 
 BugBoard::BugBoard() {
+}
 
+
+void BugBoard::moveSuperBug(int x, int y)
+{
+    for(Bug *b: bugs)
+    {
+        if(b->getType()=="SuperBug")
+        {
+            dynamic_cast<SuperBug*>(b)->move(x, y);
+        }
+    }
 }
 
 /*=======================================================
@@ -51,15 +63,14 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
-            Crawler* crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            Crawler *crawler = new Crawler(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
             crawler->setType("Crawler");
             bugs.push_back(crawler);
-        }
-        else if (bugType == "H") {
+        } else if (bugType == "H") {
             getline(ss, temp, ';');
             id = stoi(temp);
             getline(ss, temp, ';');
@@ -67,16 +78,15 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
             getline(ss, temp, ';');
             hopLength = stoi(temp);
-            Hopper* hopper = new Hopper(id, make_pair(x, y), direction,  size, alive, list<pair<int, int>>(),  hopLength);
+            Hopper *hopper = new Hopper(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>(), hopLength);
             hopper->setType("Hopper");
             bugs.push_back(hopper);
-        }
-        else if(bugType == "S") {
+        } else if (bugType == "S") {
             getline(ss, temp, ';');
             id = stoi(temp);
             getline(ss, temp, ';');
@@ -84,13 +94,30 @@ void BugBoard::initializeBoard() {
             getline(ss, temp, ';');
             y = stoi(temp);
             getline(ss, temp, ';');
-            direction = static_cast<Direction>(stoi(temp)-1);
+            direction = static_cast<Direction>(stoi(temp) - 1);
             getline(ss, temp, ';');
             size = stoi(temp);
 
-            Scorpion* scorpion = new Scorpion(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            Scorpion *scorpion = new Scorpion(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
             scorpion->setType("Scorpion");
             bugs.push_back(scorpion);
+
+        } else if (bugType == "SU") {
+            getline(ss, temp, ';');
+            id = stoi(temp);
+            getline(ss, temp, ';');
+            x = stoi(temp);
+            getline(ss, temp, ';');
+            y = stoi(temp);
+            getline(ss, temp, ';');
+            direction = static_cast<Direction>(stoi(temp) - 1);
+            getline(ss, temp, ';');
+            size = stoi(temp);
+
+            SuperBug *superBug = new SuperBug(id, make_pair(x, y), direction, size, alive, list<pair<int, int>>());
+            superBug->setType("SuperBug");
+            bugs.push_back(superBug);
+
         }
     }
     inFile.close();
@@ -156,21 +183,30 @@ void BugBoard::tapBoard() {
 
     // Call move() function on all bugs
     for (Bug *bug: bugs) {
-        if(bug->isAlive())
-            bug->move();
+        if(bug->isAlive()){
+            if (bug->getType() !="SuperBug"){
+                bug->move();
+            }
+        }
+
     }
     for (size_t i = 0; i < bugs.size(); ++i) {
         for (size_t j = i + 1; j < bugs.size(); ++j) {
             if (bugs[i]->isAlive() && bugs[j]->isAlive() && bugs[i]->getPosition() == bugs[j]->getPosition()) {
 
                 // Determine which bug eats the other
-                if (bugs[i]->getSize() > bugs[j]->getSize()) {
+                if (bugs[i]->getSize() > bugs[j]->getSize())
+                {
                     bugs[i]->eat(bugs[j]->getSize());
                     bugs[j]->setAlive(false);
-                } else if (bugs[i]->getSize() < bugs[j]->getSize()) {
+                }
+                else if (bugs[i]->getSize() < bugs[j]->getSize())
+                {
                     bugs[j]->eat(bugs[i]->getSize());
                     bugs[i]->setAlive(false);
-                } else {
+                }
+                else
+                {
 
                     // Randomly determine which bug eats the other
                     int winner = rand() % 2;
@@ -182,6 +218,7 @@ void BugBoard::tapBoard() {
                         bugs[i]->setAlive(false);
                     }
                 }
+                cout << bugs[i]->getId() << (bugs[i]->isAlive()?"Alive":"Dead") << "   " << bugs[j]->getId() << (bugs[j]->isAlive()?"Alive":"Dead") << endl;
             }
         }
     }
@@ -207,6 +244,9 @@ void BugBoard::displayLifeHistory() const {
         }
         else if (dynamic_cast<Scorpion*>(bug) != nullptr) {
             type = "Scorpion";
+        }
+        else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
+            type = "SuperBug";
         }
         cout << bug->getId() <<" " << type << " Path(life history) : ";
         const auto& path = bug->getPath();
@@ -328,6 +368,9 @@ void BugBoard::writeLifeHistoryToFile() {
                 }
                 else if (dynamic_cast<Scorpion *>(bug) != nullptr) {
                     type = "Scorpion";
+                }
+                else if (dynamic_cast<SuperBug*>(bug) != nullptr) {
+                    type = "SuperBug";
                 }
             file << bug->getId() <<" " << type << " Path(life history) : ";
             const auto& path = bug->getPath();
