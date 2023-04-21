@@ -38,6 +38,7 @@ void SuperBug::move(int x, int y) {
         newPosition.second = 9;
     }
     this->setPosition(newPosition);
+    addToPath(newPosition);
 }
 
 void SuperBug::move() {

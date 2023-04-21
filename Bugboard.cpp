@@ -183,13 +183,8 @@ void BugBoard::tapBoard() {
                 bug->move();
             }
         }
-//        else if(bug->getType() == "SuperBug"){
-//            dynamic_cast<SuperBug *>(bug)->move(x, y);
-//        }
+
     }
-
-
-
 
     for (size_t i = 0; i < bugs.size(); ++i) {
         for (size_t j = i + 1; j < bugs.size(); ++j) {
@@ -357,6 +352,7 @@ METHOD TO WRITE THE LIFE HISTORY OF ALL THE BUGS TO A FILE
 void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
     file.open("bugs_life_history_date_time.out.txt");
+    
 
     for (const auto &bug: bugs) {
         string type = "";

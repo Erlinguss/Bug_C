@@ -15,7 +15,7 @@ public:
 
     void move(int x, int y);
 
-private:
+    private:
 
     Direction getRandomDirection() const;
 
