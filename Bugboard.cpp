@@ -352,7 +352,7 @@ METHOD TO WRITE THE LIFE HISTORY OF ALL THE BUGS TO A FILE
 void BugBoard::writeLifeHistoryToFile() {
     ofstream file;
     file.open("bugs_life_history_date_time.out.txt");
-    
+
 
     for (const auto &bug: bugs) {
         string type = "";
@@ -383,7 +383,7 @@ void BugBoard::writeLifeHistoryToFile() {
     file.close();
 }
 
-//void BugBoard::writeLifeHistoryToFile() {
+//void BugBoard::writeLifeHistoryToFile() { // I tried to implement this method to avoid repetitive code with the life history.
 //    ofstream file;
 //    file.open("bugs_life_history_date_time.out.txt");
 //
@@ -391,6 +391,8 @@ void BugBoard::writeLifeHistoryToFile() {
 //
 //    file.close();
 //}
+
+
 /*=======================================================
           METHOD TO MOVE THE SUPER BUG SEPARATELY
               FROM THE REST OF THE BUGS

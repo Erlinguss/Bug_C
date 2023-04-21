@@ -35,7 +35,7 @@ Direction Crawler::getRandomDirection() const {
     static uniform_int_distribution<> dis(0, 3);
     int randInt = dis(gen);
     return static_cast<Direction>(randInt);
-}
+}// cppreference. (n.d.). random_device. Retrieved March 22, 2023, from https://en.cppreference.com/w/cpp/numeric/random/random_device
 
 pair<int, int> Crawler::getNextPosition() const {
     int crawlerX = getPosition().first;

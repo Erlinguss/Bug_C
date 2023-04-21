@@ -58,7 +58,8 @@ void Hopper::setRandomDirection() {
     static uniform_int_distribution<> dis(0, 3);
     int randInt = dis(gen);
     direction = static_cast<Direction>(randInt);
-}
+}// cppreference. (n.d.). random_device. Retrieved March 24, 2023, from https://en.cppreference.com/w/cpp/numeric/random/random_device
+
 
 /*=======================================================
           METHOD TO SET A RANDOM DIRECTION
